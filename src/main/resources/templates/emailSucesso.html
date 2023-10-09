@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Verificado</title>
+    <style>body{margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background-color:#1a1a1a}.verification-box{background-color:green;padding:20px;border-radius:40px;text-align:center;box-shadow:0 0 10px rgba(0,0,0,0.2);animation:float 3s ease-in-out infinite alternate}.verification-text{font-size:24px;font-weight:700;color:#fff}@keyframes float{0%{transform:translateY(0)}100%{transform:translateY(-10px)}}.cosmos{width:100%;height:100%;position:absolute;top:0;left:0;pointer-events:none}.cosmos .dot{position:absolute;background-color:#fff;border-radius:50%;animation:blink 5s ease-in-out infinite}@keyframes blink{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}</style>
+</head>
+<body>
+<div class="cosmos"></div>
+<div class="verification-box">
+    <p class="verification-text">Email verificado com sucesso!</p>
+</div>
+<script>const c=document.querySelector(".cosmos"),m=60,v=0;function a(){v<m&&(d=document.createElement("div"),d.className="dot",d.style.left=`${Math.random()*100}%`,d.style.top=`${Math.random()*100}%`,d.style.width=`${Math.random()*10}px`,d.style.height=`${Math.random()*10}px`,c.appendChild(d),v++)}setInterval(a,500);</script>
+</body>
+</html>

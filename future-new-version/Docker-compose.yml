@@ -1,0 +1,15 @@
+version: '3'
+services:
+  spring-app:
+    build:
+      context: ..
+      dockerfile: ../Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+  mysql-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 3570951
+      MYSQL_DATABASE: floricultura

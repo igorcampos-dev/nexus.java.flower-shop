@@ -1,0 +1,1 @@
+mvn clean install -DskipTests  //gerar jar do projeto

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email com erro</title>
+    <style>body{margin:0;padding:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background-color:#1a1a1a;}.verification-box{background-color:red;padding:20px;border-radius:40px;text-align:center;box-shadow:0 0 10px rgba(0,0,0,0.2);animation:float 3s ease-in-out infinite alternate;}.verification-text{font-size:24px;font-weight:bold;color:#fff;}@keyframes float{0%{transform:translateY(0);}100%{transform:translateY(-10px);}}.cosmos{width:100%;height:100%;position:absolute;top:0;left:0;pointer-events:none;}.cosmos .dot{position:absolute;background-color:#fff;border-radius:50%;animation:blink 5s ease-in-out infinite;}@keyframes blink{0%,100%{opacity:0;transform:scale(0);}50%{opacity:1;transform:scale(1);}}</style>
+</head>
+<body>
+<div class="cosmos"></div>
+<div class="verification-box"><p class="verification-text">Houve um erro ao validar seu email, email incorreto ou converse com o suporte!</p></div>
+<script>const cosmos=document.querySelector(".cosmos");function createDot(){const dot=document.createElement("div");dot.className="dot";dot.style.left=`${Math.random()*100}%`;dot.style.top=`${Math.random()*100}%`;dot.style.width=`${Math.random()*10}px`;dot.style.height=`${Math.random()*10}px`;cosmos.appendChild(dot);}setInterval(createDot,500);</script>
+</body>
+</html>
