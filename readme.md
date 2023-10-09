@@ -21,10 +21,7 @@
 
 <p align="center">
   <strong>Autenticação Segura:</strong> Utilizamos o Spring Security para garantir que seus dados estejam protegidos.<br><br>
-  <strong>Catálogo de Flores:</strong> Explore nossa vasta coleção de flores e escolha a perfeita para enviar.<br><br>
   <strong>Envio de Mensagens Personalizadas:</strong> Crie mensagens especiais para acompanhar suas flores.<br><br>
-  <strong>Atividades de Email:</strong> Mantenha-se atualizado com notificações de entrega e atualizações de pedidos.<br><br>
-  <strong>Suporte Excepcional:</strong> Saiba mais sobre nossa floricultura e entre em contato conosco a qualquer momento.<br><br>
 </p>
 
 <h2 align="center">🚀 Início Rápido</h2>
