@@ -8,7 +8,6 @@ public class FlowerShopBackApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FlowerShopBackApplication.class, args);
-		System.out.println("Tudo funcionando!");
 	}
 
 }

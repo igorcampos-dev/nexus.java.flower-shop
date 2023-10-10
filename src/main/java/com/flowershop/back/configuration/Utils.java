@@ -24,7 +24,9 @@ public class Utils {
         return sb.toString();
     }
     public static String fileHtml(String nameFile) throws IOException {
-        String filePath = "src/main/resources/templates/" + nameFile + ".html";
+        String filePath = Files.exists(Paths.get("src/main/resources/templates/" + nameFile + ".html"))
+                ? "src/main/resources/templates/" + nameFile + ".html"
+                : "app/templates/" + nameFile + ".html";
         byte[] encoded = Files.readAllBytes(Paths.get(filePath));
         return new String(encoded, StandardCharsets.UTF_8);
     }

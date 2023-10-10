@@ -2,8 +2,8 @@ version: '3'
 services:
   spring-app:
     build:
-      context: ..
-      dockerfile: ../Dockerfile
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:

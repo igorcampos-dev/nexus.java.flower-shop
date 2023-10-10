@@ -112,3 +112,35 @@
 - **Endpoint:** `POST /flower-shop/admin`
 - **Descrição:** Este endpoint é protegido por segurança com o Spring Security e é responsável por realizar funções com as flores cadastradas, acessível apenas pelo administrador.
 
+<h2 align="center">🐳 Executando o Projeto no Docker</h2>
+
+Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:
+
+📦 **Passo 1: Crie um novo JAR do projeto (configure antes as variáveis de ambiente explicado no início do readme)**
+
+No diretório raiz do projeto, execute o seguinte comando para criar um novo JAR. Certifique-se de pular os testes durante o processo:
+
+ <code> mvn clean install -DskipTests</code><br><br>
+
+🐋 Passo 3: Troque a database da base de dados
+
+  <code> application.properties </code><br><br> 
+
+*pro link correto comentado abaixo
+
+🐋 Passo 2: Crie a imagem Docker
+
+Após a geração do JAR, verifique se o arquivo Dockerfile está presente no projeto. Se estiver presente, execute o seguinte comando para criar a imagem Docker. Substitua {nome do projeto} pelo nome desejado para a imagem:
+
+ <code> docker build -t {nome do projeto} .</code><br><br>
+
+Exemplo:
+
+ <code> docker build -t java-api .</code><br><br>
+
+▶️ Passo 3: Inicie o contêiner Docker com o aplicativo (arquivo docker-compose) do projeto)
+
+Execute o seguinte comando para criar o contêiner Docker com o projeto.
+
+  <code> docker compose up </code><br><br>
+
