@@ -1,9 +1,16 @@
 package com.flowershop.back.services.email;
 
+import com.flowershop.back.configuration.Mensagens;
+import com.flowershop.back.configuration.ResponseMessage;
 import com.flowershop.back.configuration.ServerLink;
-import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.domain.flower.MessageDTO;
+import com.flowershop.back.domain.user.User;
+import com.flowershop.back.exceptions.FlowerNotFoundException;
+import com.flowershop.back.exceptions.InvalidEmailException;
+import com.flowershop.back.exceptions.UserNotFoundException;
 import com.flowershop.back.repositories.FlowerRepository;
+import com.flowershop.back.repositories.UserRepository;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,50 +20,56 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
+import java.util.Optional;
 import java.util.Properties;
 
-import static com.flowershop.back.configuration.Utils.isEmailValid;
+import static com.flowershop.back.configuration.UtilsProject.isEmailValid;
 
 @Service
 @Slf4j
 public class EmailService {
 
-    @Value("${api.java.mail.email}")
-    private String emailAdmin;
-    @Value("${api.java.mail.password}")
-    private String passwordAdmin;
-    @Autowired
-    private ServerLink serverLink;
-
     @Autowired
     FlowerRepository repository;
-    public boolean sendEmailVerification(String email, String hash) {
-        String assunto = "Confirmação de cadastro";
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Value("${api.java.mail.email}")
+    private  String emailAdmin;
+    @Value("${api.java.mail.password}")
+    private  String passwordAdmin;
+    @Autowired
+    private  ServerLink serverLink;
+
+
+
+
+    public void sendEmailVerification(String email, String hash) {
+        String assunto = Mensagens.ASSUNTO_CONFIRMACAO;
         String url = serverLink.getLink() + "/confirme-email?hash=" + hash;
-        String mensagem = "<html><body>Prezado(a),<br/><br/>Esperamos que esteja bem. Estamos entrando em contato para solicitar a confirmação do seu cadastro através do link a seguir:<br/>"
-                + "<a href=\"" + url + "\">Clique aqui para confirmar o seu cadastro</a>.<br/><br/>"
-                + "Atenciosamente,<br/>"
-                + "TI Flower-Shop Campos, link 2:<br/><br/>"
-                + "Observação: Esta mensagem é gerada automaticamente e não requer resposta.</body></html>";
+        String mensagem = String.format(Mensagens.MENSAGEM_CONFIRMACAO, url);
 
-
-        return send(email, assunto, mensagem);
+        send(email, assunto, mensagem);
     }
 
-    public boolean sendEmailUser(MessageDTO userMessage){
-        Flowers flower = repository.findByImage(userMessage.flower());
 
-        String assunto = "Uma flor linda para uma pessoa linda \uD83D\uDE0A";
-        String linkFlor = "<a href=\"" + userMessage.flower() + "\">Clique aqui para ver a flor</a>";
-        String mensagemFinal = "Um usuário que usa nossos serviços mandou uma flor para ti!, " +
-                "a flor se chama " + flower.getName() + ", uma linda flor, " +
-                "também deixou uma mensagem para você:<br/><br/>" + userMessage.mensagem() +
-                "<br/><br/>Veja a flor: " + linkFlor;
 
-        return send(userMessage.email(), assunto, mensagemFinal);
+    public void sendEmailUser(MessageDTO message){
 
+        userRepository.findByHash(message.hash())
+                .orElseThrow(() -> new UserNotFoundException("Usuario não foi encontrado ao enviar o email!") );
+
+
+        repository.findByImage(message.flower())
+                .map( flower -> {
+                    String assunto = Mensagens.ASSUNTO;
+                    String linkFlor = String.format(Mensagens.LINK_FLOR_TEMPLATE, message.flower());
+                    String mensagemFinal = String.format(Mensagens.MENSAGEM_TEMPLATE, flower.getName(), message.mensagem(), linkFlor);
+                    return send(message.email(), assunto, mensagemFinal);
+                })
+                .orElseThrow(() -> new FlowerNotFoundException("Flor não encontrada"));
     }
 
 
@@ -75,21 +88,25 @@ public class EmailService {
     }
 
     @SneakyThrows
-    public boolean send(String email, String assunto, String mensagem){
-        if (isEmailValid(email)) {
-            JavaMailSender emailSender = MailSender();
-            MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    public ResponseMessage send(String email, String assunto, String mensagem) {
+        try {
+            if (isEmailValid(email)) {
+                JavaMailSender emailSender = MailSender();
+                MimeMessage message = emailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            helper.setFrom(emailAdmin);
-            helper.setTo(email.toLowerCase());
-            helper.setSubject(assunto);
-            helper.setSentDate(new Date());
-            helper.setText(mensagem, true);
+                helper.setFrom(emailAdmin);
+                helper.setTo(email.toLowerCase());
+                helper.setSubject(assunto);
+                helper.setSentDate(new Date());
+                helper.setText(mensagem, true);
 
-            emailSender.send(message);
-            return true;
+                emailSender.send(message);
+                return new ResponseMessage("Email enviado com sucesso!");
+            }
+        } catch (MessagingException e) {
+            throw new MessagingException("O servidor encontrou uma falha ao tentar enviar o email. Por favor, tente novamente mais tarde.");
         }
-        return false;
+        throw new InvalidEmailException("Email inválido. Verifique o formato do email fornecido.");
     }
 }

@@ -1,7 +1,12 @@
 package com.flowershop.back.services;
 
+import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
+import com.flowershop.back.domain.user.AuthenticationDTO;
+import com.flowershop.back.domain.user.RegisterDTO;
 import com.flowershop.back.domain.user.User;
+import com.flowershop.back.exceptions.UserAlreadyExistsException;
+import com.flowershop.back.exceptions.UserPendingActivationException;
 import com.flowershop.back.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +16,48 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-    public boolean updateStatus(String token){
-        User user = userRepository.findByHash(token);
-
-        if (user == null){ return false; }
-            user.setStatus(StatusUser.A);
-            userRepository.save(user);
-            return true;
-        }
 
 
+    public void updateStatus(String hash) {
+        userRepository.findByHash(hash)
+                .filter(user -> user.getStatus() == StatusUser.P)
+                .ifPresent(user -> {
+                    user.setStatus(StatusUser.A);
+                    userRepository.save(user);
+                });
     }
+
+
+
+
+
+
+    public void save(User user) {
+
+        userRepository.findByLogin(user.getLogin())
+                .ifPresent(existingUser -> {
+                    throw new UserAlreadyExistsException("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.");
+                });
+
+        userRepository.save(user);
+    }
+
+    public String validateUser(AuthenticationDTO users) throws UserPendingActivationException {
+        return userRepository.findByLogin(users.login())
+                .filter(user -> StatusUser.A.equals(user.getStatus()))
+                .map(User::getHash)
+                .orElseThrow(() -> new UserPendingActivationException("Usuário está pendente a ativação!"));
+    }
+
+    public User createUser(RegisterDTO data, String hash, String pass) {
+        return User.builder()
+                .login(data.login())
+                .hash(hash)
+                .password(pass)
+                .role(Role.USER)
+                .status(StatusUser.P)
+                .build();
+    }
+
+}
 

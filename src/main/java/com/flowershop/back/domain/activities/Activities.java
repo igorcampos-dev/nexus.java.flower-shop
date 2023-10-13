@@ -1,11 +1,7 @@
 package com.flowershop.back.domain.activities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "activities")
@@ -14,18 +10,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Builder
 public class Activities {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String user;
-    private String remetente;
+    private String remittent;
     private LocalDateTime localDateTime;
 
-    public Activities( ActivitiesDTO activitiesDTO) {
-        this.user = activitiesDTO.user();
-        this.remetente = activitiesDTO.remetente();
-        this.localDateTime = activitiesDTO.localDateTime();
-    }
 }

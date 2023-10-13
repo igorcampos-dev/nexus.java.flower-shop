@@ -1,18 +1,17 @@
 package com.flowershop.back.controllers;
 
 import com.flowershop.back.configuration.ResponseMessage;
-import com.flowershop.back.configuration.Utils;
-import com.flowershop.back.configuration.enums.Role;
-import com.flowershop.back.configuration.enums.StatusUser;
+import com.flowershop.back.configuration.UtilsProject;
 import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.LoginResponseDTO;
 import com.flowershop.back.domain.user.RegisterDTO;
 import com.flowershop.back.domain.user.User;
-import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.security.TokenService;
+import com.flowershop.back.services.UserService;
 import com.flowershop.back.services.email.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,41 +26,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    UserRepository repository;
+    AuthenticationManager authenticationManager;
     @Autowired
     TokenService tokenService;
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    UserService userService;
+
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
-        UserDetails userDetails = repository.findByLogin(data.login());
-            User user = (User) userDetails;
-            if (user.getStatus() == StatusUser.P) return ResponseEntity.badRequest().body(new ResponseMessage("Usuário está pendente, verfique seu email para validar,ou converse com nosso suporte!"));
-           var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-           var auth = this.authenticationManager.authenticate(usernamePassword);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data){
 
-           var token = tokenService.generateToken((User) auth.getPrincipal());
+        String hash = this.userService.validateUser(data);
 
-        return ResponseEntity.ok(new LoginResponseDTO(token , user.getHash()));
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        var token = tokenService.generateToken(userDetails);
+
+        return ResponseEntity.ok(new LoginResponseDTO(token , hash ));
+
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<ResponseMessage> register(@RequestBody @Valid RegisterDTO data){
-        String hash = Utils.randomHash();
-        if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body(new ResponseMessage("Usuário já existe!"));
+        String hash = UtilsProject.randomHash();
+        String pass = new BCryptPasswordEncoder().encode(data.password());
+        User user = this.userService.createUser(data, hash, pass);
+        this.userService.save(user);
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, Role.USER, StatusUser.P, hash);
+        this.emailService.sendEmailVerification(data.login(), hash);
 
-        this.repository.save(newUser);
-
-        boolean sendEmail = emailService.sendEmailVerification(data.login(), hash);
-        if (!sendEmail) return ResponseEntity.badRequest().body(new ResponseMessage("Não foi possivel enviar email para o remetente"));
-        return ResponseEntity.ok().body(new ResponseMessage("Usuário cadastrado com sucesso, mas verifique a caixa de entrada do seu email para validar a sua conta!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Usuário cadastrado com sucesso, mas verifique a caixa de entrada do seu email para validar a sua conta!"));
     }
+
+
 }

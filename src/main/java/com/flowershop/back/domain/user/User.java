@@ -3,16 +3,13 @@ package com.flowershop.back.domain.user;
 import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "users")
 @Entity(name = "users")
@@ -20,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Data
+@Builder
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,21 +28,18 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    private String hash;
+
+    @Column(unique = true)
     private String login;
+
+    private String hash;
     private String password;
-    public User(String login, String password, Role role, StatusUser status, String hash){
-        this.login = login;
-        this.password = password;
-        this.role = role;
-        this.status = status;
-        this.hash = hash;
-    }
+
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       if (this.role.toString() == "ADMIN") return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+       if (Objects.equals(this.role.toString(), "ADMIN")) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
@@ -72,5 +67,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 
 }

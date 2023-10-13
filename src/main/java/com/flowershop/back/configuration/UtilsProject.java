@@ -1,18 +1,17 @@
 package com.flowershop.back.configuration;
 
-import jakarta.annotation.Nullable;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-import java.io.IOException;
+import lombok.SneakyThrows;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 
-public class Utils {
+public class UtilsProject {
+
+    private UtilsProject(){
+    }
 
     static final String AB = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     static SecureRandom rnd = new SecureRandom();
@@ -23,7 +22,9 @@ public class Utils {
         for (int i = 0; i < 48; i++) sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
-    public static String fileHtml(String nameFile) throws IOException {
+
+    @SneakyThrows
+    public static String fileHtml(String nameFile){
         String filePath = Files.exists(Paths.get("src/main/resources/templates/" + nameFile + ".html"))
                 ? "src/main/resources/templates/" + nameFile + ".html"
                 : "app/templates/" + nameFile + ".html";
