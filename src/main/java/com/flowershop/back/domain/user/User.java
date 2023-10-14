@@ -39,9 +39,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       if (Objects.equals(this.role.toString(), "ADMIN")) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
-       else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == Role.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
+
 
     @Override
     public String getUsername() {

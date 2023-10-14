@@ -1,6 +1,6 @@
 package com.flowershop.back.services;
 
-import com.flowershop.back.domain.flower.FlowerResponseDTO;
+import com.flowershop.back.domain.flower.FlowerDTO;
 import com.flowershop.back.domain.flower.FlowerUpdateDTO;
 import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.exceptions.FlowerAlreadyExistsException;
@@ -10,6 +10,7 @@ import com.flowershop.back.repositories.FlowerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 
@@ -47,8 +48,8 @@ public class FlowerService implements InterfaceFlowerService {
     }
 
     @Override
-    public List<FlowerResponseDTO> findAll() {
-        return this.repository.findAll().stream().map(FlowerResponseDTO::new).toList();
+    public List<FlowerDTO> findAll() {
+        return this.repository.findAll().stream().map(FlowerDTO::new).toList();
     }
 
     @Override

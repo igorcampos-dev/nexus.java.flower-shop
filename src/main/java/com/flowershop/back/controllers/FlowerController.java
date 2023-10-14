@@ -2,7 +2,6 @@ package com.flowershop.back.controllers;
 
 import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.flower.FlowerDTO;
-import com.flowershop.back.domain.flower.FlowerResponseDTO;
 import com.flowershop.back.domain.flower.FlowerUpdateDTO;
 import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.services.FlowerService;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -38,9 +38,9 @@ public class FlowerController {
     }
 
     @GetMapping("/see-flowers")
-    public ResponseEntity<List<FlowerResponseDTO>> getAllProducts(){
+    public ResponseEntity<List<FlowerDTO>> getAllProducts(){
 
-        List<FlowerResponseDTO> productList = this.flowerService.findAll();
+        List<FlowerDTO> productList = this.flowerService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

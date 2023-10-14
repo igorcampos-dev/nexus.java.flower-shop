@@ -4,7 +4,6 @@ import com.flowershop.back.configuration.UtilsProject;
 import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.LoginResponseDTO;
-import com.flowershop.back.domain.user.RegisterDTO;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.security.TokenService;
 import com.flowershop.back.services.UserService;
@@ -54,7 +53,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<ReturnResponseBody> register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity<ReturnResponseBody> register(@RequestBody @Valid AuthenticationDTO data){
         String hash = UtilsProject.randomHash();
         String pass = new BCryptPasswordEncoder().encode(data.password());
         User user = this.userService.createUser(data, hash, pass);

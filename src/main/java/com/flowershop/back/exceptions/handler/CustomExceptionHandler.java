@@ -144,11 +144,23 @@ public class CustomExceptionHandler {
     public ResponseEntity<Error> methodArgumentNotValidException(HttpServletRequest s){
         Error error = Error.builder()
                 .timestamp(instant)
-                .message(" dados passados são invalidos")
+                .message("dados passados são invalidos")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .path(s.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Error> invalidCredentialsException(HttpServletRequest s){
+        Error error = Error.builder()
+                .timestamp(instant)
+                .message("credenciais incorretas")
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .path(s.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
 

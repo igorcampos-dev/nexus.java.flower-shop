@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Properties;
 
-import static com.flowershop.back.configuration.UtilsProject.isEmailValid;
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 
 @Service
 @Slf4j

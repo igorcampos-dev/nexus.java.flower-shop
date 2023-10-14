@@ -1,15 +1,17 @@
 package com.flowershop.back.services;
 
-import com.flowershop.back.interfaces.InterfaceUserService;
 import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.AuthenticationDTO;
-import com.flowershop.back.domain.user.RegisterDTO;
 import com.flowershop.back.domain.user.User;
+import com.flowershop.back.exceptions.InvalidCredentialsException;
 import com.flowershop.back.exceptions.UserAlreadyExistsException;
+import com.flowershop.back.exceptions.UserNotFoundException;
 import com.flowershop.back.exceptions.UserPendingActivationException;
+import com.flowershop.back.interfaces.InterfaceUserService;
 import com.flowershop.back.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,12 +20,15 @@ public class UserService implements InterfaceUserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public void save(User user) {
 
         userRepository.findByLogin(user.getLogin())
-                .ifPresent(existingUser -> {
+                .ifPresent( p -> {
                     throw new UserAlreadyExistsException("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.");
                 });
 
@@ -46,14 +51,22 @@ public class UserService implements InterfaceUserService {
     @Override
     public String validateUser(AuthenticationDTO users) {
         return userRepository.findByLogin(users.login())
-                .filter(user -> StatusUser.A.equals(user.getStatus()))
-                .map(User::getHash)
-                .orElseThrow(() -> new UserPendingActivationException("Usuário está pendente a ativação!"));
-
+                .map(user -> {
+                    if (!passwordEncoder.matches(users.password(), user.getPassword())) {
+                        throw new InvalidCredentialsException("Credenciais incorretas!");
+                    }
+                    if (StatusUser.P.equals(user.getStatus())) {
+                        throw new UserPendingActivationException("Usuário está pendente a ativação!");
+                    }
+                    return user.getHash();
+                })
+                .orElseThrow( () -> new UserNotFoundException("Usuário não foi encontrado!"));
     }
 
+
+
     @Override
-    public User createUser(RegisterDTO data, String hash, String pass) {
+    public User createUser(AuthenticationDTO data, String hash, String pass) {
         return User.builder()
                 .login(data.login())
                 .hash(hash)

@@ -33,6 +33,7 @@ public class ActivitiesService implements InterfaceActivitiesService {
                 .remittent(message.email())
                 .localDateTime(LocalDateTime.now())
                 .build();
+
         activitiesRepository.save(activities);
     }
 

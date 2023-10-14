@@ -1,10 +1,6 @@
 package com.flowershop.back.configuration;
 
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +11,6 @@ public class UtilsProject {
     private static String AB = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public static String randomHash() {
-
         StringBuilder sb = new StringBuilder(48);
         for (int i = 0; i < 48; i++) sb.append(AB.charAt(new SecureRandom().nextInt(AB.length())));
         return sb.toString();
@@ -30,14 +25,5 @@ public class UtilsProject {
         return new String(encoded, StandardCharsets.UTF_8);
     }
 
-
-    public static boolean isEmailValid(String email) {
-        try {
-            new InternetAddress(email).validate();
-            return true;
-        } catch (AddressException ex) {
-            return false;
-        }
-    }
 
 }
