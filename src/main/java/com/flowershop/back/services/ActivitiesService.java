@@ -5,6 +5,7 @@ import com.flowershop.back.domain.activities.ActivitiesResponseDTO;
 import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.exceptions.UserNotFoundException;
+import com.flowershop.back.interfaces.InterfaceActivitiesService;
 import com.flowershop.back.repositories.ActivitiesRepository;
 import com.flowershop.back.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class ActivitiesService {
+public class ActivitiesService implements InterfaceActivitiesService {
 
     @Autowired
     ActivitiesRepository activitiesRepository;
@@ -22,7 +23,7 @@ public class ActivitiesService {
     UserRepository userRepository;
 
 
-
+    @Override
     public void save(MessageDTO message) {
         User user = userRepository.findByHash(message.hash())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ao salvar a sua atividade"));
@@ -36,7 +37,7 @@ public class ActivitiesService {
     }
 
 
-
+    @Override
     public List<ActivitiesResponseDTO> findAll() {
       return  this.activitiesRepository.findAll().stream().map(ActivitiesResponseDTO::new).toList();
     }

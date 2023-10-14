@@ -3,6 +3,8 @@ package com.flowershop.back.configuration;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,16 +12,12 @@ import java.security.SecureRandom;
 
 public class UtilsProject {
 
-    private UtilsProject(){
-    }
-
-    static final String AB = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    static SecureRandom rnd = new SecureRandom();
-
+    private static String AB = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public static String randomHash() {
+
         StringBuilder sb = new StringBuilder(48);
-        for (int i = 0; i < 48; i++) sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        for (int i = 0; i < 48; i++) sb.append(AB.charAt(new SecureRandom().nextInt(AB.length())));
         return sb.toString();
     }
 

@@ -1,7 +1,7 @@
 package com.flowershop.back.controllers;
 
-import com.flowershop.back.configuration.ResponseMessage;
 import com.flowershop.back.configuration.UtilsProject;
+import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.LoginResponseDTO;
 import com.flowershop.back.domain.user.RegisterDTO;
@@ -54,7 +54,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseMessage> register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity<ReturnResponseBody> register(@RequestBody @Valid RegisterDTO data){
         String hash = UtilsProject.randomHash();
         String pass = new BCryptPasswordEncoder().encode(data.password());
         User user = this.userService.createUser(data, hash, pass);
@@ -62,7 +62,7 @@ public class AuthenticationController {
 
         this.emailService.sendEmailVerification(data.login(), hash);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Usuário cadastrado com sucesso, mas verifique a caixa de entrada do seu email para validar a sua conta!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Usuário cadastrado com sucesso, mas verifique a caixa de entrada do seu email para validar a sua conta!"));
     }
 
 

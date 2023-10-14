@@ -5,6 +5,7 @@ import com.flowershop.back.domain.flower.FlowerUpdateDTO;
 import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.exceptions.FlowerAlreadyExistsException;
 import com.flowershop.back.exceptions.FlowerNotFoundException;
+import com.flowershop.back.interfaces.InterfaceFlowerService;
 import com.flowershop.back.repositories.FlowerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,12 @@ import java.util.List;
 
 
 @Service
-public class FlowerService {
+public class FlowerService implements InterfaceFlowerService {
     @Autowired
     FlowerRepository repository;
 
-    public void updateFlower( FlowerUpdateDTO flower) {
+    @Override
+    public void updateFlower(FlowerUpdateDTO flower) {
 
         repository.findByName(flower.name())
                 .orElseThrow(() -> new FlowerNotFoundException("Flor não existe na base de dados"));
@@ -26,7 +28,7 @@ public class FlowerService {
             throw new FlowerAlreadyExistsException("Nome da flor já existe na base de dados");
         });
 
-      Flowers newFlower =  Flowers.builder()
+        Flowers newFlower =  Flowers.builder()
                 .image(flower.image())
                 .name(flower.newName())
                 .build();
@@ -34,8 +36,8 @@ public class FlowerService {
         repository.save(newFlower);
     }
 
+    @Override
     public void save(Flowers flowers) {
-
         repository.findByImage(flowers.getName())
                 .ifPresent(flowerExists -> {
                     throw new FlowerAlreadyExistsException("Flor já existe, escolha outras informações!");
@@ -44,10 +46,12 @@ public class FlowerService {
         repository.save(flowers);
     }
 
+    @Override
     public List<FlowerResponseDTO> findAll() {
-       return this.repository.findAll().stream().map(FlowerResponseDTO::new).toList();
+        return this.repository.findAll().stream().map(FlowerResponseDTO::new).toList();
     }
 
+    @Override
     @Transactional
     public void deleteByName(String name) {
         Flowers flower = repository.findByName(name)
@@ -55,5 +59,4 @@ public class FlowerService {
 
         repository.deleteById(flower.getId());
     }
-
 }

@@ -1,5 +1,6 @@
 package com.flowershop.back.services;
 
+import com.flowershop.back.interfaces.InterfaceUserService;
 import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.AuthenticationDTO;
@@ -12,26 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements InterfaceUserService {
 
     @Autowired
     UserRepository userRepository;
 
 
-    public void updateStatus(String hash) {
-        userRepository.findByHash(hash)
-                .filter(user -> user.getStatus() == StatusUser.P)
-                .ifPresent(user -> {
-                    user.setStatus(StatusUser.A);
-                    userRepository.save(user);
-                });
-    }
-
-
-
-
-
-
+    @Override
     public void save(User user) {
 
         userRepository.findByLogin(user.getLogin())
@@ -40,15 +28,31 @@ public class UserService {
                 });
 
         userRepository.save(user);
+
     }
 
-    public String validateUser(AuthenticationDTO users) throws UserPendingActivationException {
+    @Override
+    public void updateStatus(String hash) {
+
+        userRepository.findByHash(hash)
+                .filter(user -> user.getStatus() == StatusUser.P)
+                .ifPresent(user -> {
+                    user.setStatus(StatusUser.A);
+                    userRepository.save(user);
+                });
+
+    }
+
+    @Override
+    public String validateUser(AuthenticationDTO users) {
         return userRepository.findByLogin(users.login())
                 .filter(user -> StatusUser.A.equals(user.getStatus()))
                 .map(User::getHash)
                 .orElseThrow(() -> new UserPendingActivationException("Usuário está pendente a ativação!"));
+
     }
 
+    @Override
     public User createUser(RegisterDTO data, String hash, String pass) {
         return User.builder()
                 .login(data.login())
@@ -58,6 +62,7 @@ public class UserService {
                 .status(StatusUser.P)
                 .build();
     }
+
 
 }
 

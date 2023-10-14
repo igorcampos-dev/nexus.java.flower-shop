@@ -1,6 +1,6 @@
 package com.flowershop.back.controllers;
 
-import com.flowershop.back.configuration.ResponseMessage;
+import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.flower.FlowerDTO;
 import com.flowershop.back.domain.flower.FlowerResponseDTO;
 import com.flowershop.back.domain.flower.FlowerUpdateDTO;
@@ -21,20 +21,20 @@ public class FlowerController {
 
 
     @PostMapping("/register-flower")
-    public ResponseEntity<ResponseMessage> postProduct(@RequestBody @Valid FlowerDTO flower){
+    public ResponseEntity<ReturnResponseBody> postProduct(@RequestBody @Valid FlowerDTO flower){
         Flowers flowers = new Flowers(flower);
 
         this.flowerService.save(flowers);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Flor cadastrada!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Flor cadastrada!"));
     }
 
     @PutMapping("/update-flower")
-    public ResponseEntity<ResponseMessage>  updateFlower(@RequestBody @Valid FlowerUpdateDTO flower){
+    public ResponseEntity<ReturnResponseBody>  updateFlower(@RequestBody @Valid FlowerUpdateDTO flower){
 
         this.flowerService.updateFlower(flower);
 
-       return ResponseEntity.ok().body(new ResponseMessage("flor modificada!"));
+       return ResponseEntity.ok().body(new ReturnResponseBody("flor modificada!"));
     }
 
     @GetMapping("/see-flowers")
@@ -46,11 +46,11 @@ public class FlowerController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseMessage> deleteFlower(@RequestParam("name") String name){
+    public ResponseEntity<ReturnResponseBody> deleteFlower(@RequestParam("name") String name){
 
            this.flowerService.deleteByName(name);
 
-           return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Flor deletada com sucesso!"));
+           return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Flor deletada com sucesso!"));
        }
 
 }
