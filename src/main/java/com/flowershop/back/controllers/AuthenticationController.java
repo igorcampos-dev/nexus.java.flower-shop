@@ -5,9 +5,9 @@ import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.LoginResponseDTO;
 import com.flowershop.back.domain.user.User;
-import com.flowershop.back.security.TokenService;
 import com.flowershop.back.services.UserService;
-import com.flowershop.back.services.email.EmailService;
+import com.flowershop.back.security.TokenService;
+import com.flowershop.back.services.impl.email.EmailServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     @Autowired
     TokenService tokenService;
     @Autowired
-    EmailService emailService;
+    EmailServiceImpl emailService;
 
     @Autowired
     UserService userService;

@@ -1,4 +1,4 @@
-package com.flowershop.back.services;
+package com.flowershop.back.services.impl;
 
 import com.flowershop.back.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorizationService implements UserDetailsService {
+public class AuthorizationServiceImpl implements UserDetailsService {
 
     @Autowired
     UserRepository repository;

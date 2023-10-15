@@ -2,7 +2,7 @@ package com.flowershop.back.controllers;
 
 import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.services.ActivitiesService;
-import com.flowershop.back.services.email.EmailService;
+import com.flowershop.back.services.impl.email.EmailServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SendmessageController {
 
     @Autowired
-    EmailService emailService;
+    EmailServiceImpl emailService;
 
     @Autowired
     ActivitiesService activitiesService;

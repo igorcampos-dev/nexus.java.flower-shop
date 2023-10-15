@@ -1,4 +1,4 @@
-package com.flowershop.back.services.email;
+package com.flowershop.back.services.impl.email;
 
 import com.flowershop.back.configuration.Mensagens;
 import com.flowershop.back.domain.ReturnResponseBody;
@@ -6,9 +6,9 @@ import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.exceptions.FlowerNotFoundException;
 import com.flowershop.back.exceptions.InvalidEmailException;
 import com.flowershop.back.exceptions.UserNotFoundException;
-import com.flowershop.back.interfaces.InterfaceEmailService;
 import com.flowershop.back.repositories.FlowerRepository;
 import com.flowershop.back.repositories.UserRepository;
+import com.flowershop.back.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
@@ -26,7 +26,7 @@ import java.util.Properties;
 
 @Service
 @Slf4j
-public class EmailService implements InterfaceEmailService {
+public class EmailServiceImpl implements EmailService {
 
     @Autowired
     FlowerRepository repository;
