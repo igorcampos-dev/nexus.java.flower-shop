@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
                     throw new UserAlreadyExistsException("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.");
                 });
 
+
         userRepository.save(user);
 
     }

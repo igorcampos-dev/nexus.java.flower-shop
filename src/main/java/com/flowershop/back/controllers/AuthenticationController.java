@@ -6,7 +6,7 @@ import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.LoginResponseDTO;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.services.UserService;
-import com.flowershop.back.security.TokenService;
+import com.flowershop.back.services.impl.TokenServiceImpl;
 import com.flowershop.back.services.impl.email.EmailServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class AuthenticationController {
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    TokenService tokenService;
+    TokenServiceImpl tokenServiceImpl;
     @Autowired
     EmailServiceImpl emailService;
 
@@ -45,7 +45,7 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        var token = tokenService.generateToken(userDetails);
+        var token = tokenServiceImpl.generateToken(userDetails);
 
         return ResponseEntity.ok(new LoginResponseDTO(token , hash ));
 

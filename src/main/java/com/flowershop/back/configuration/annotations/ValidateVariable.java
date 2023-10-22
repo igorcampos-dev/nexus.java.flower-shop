@@ -1,6 +1,5 @@
-package com.flowershop.back.configuration;
+package com.flowershop.back.configuration.annotations;
 
-import com.flowershop.back.configuration.annotations.isValid;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

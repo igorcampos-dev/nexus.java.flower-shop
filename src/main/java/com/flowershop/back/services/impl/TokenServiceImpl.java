@@ -1,9 +1,10 @@
-package com.flowershop.back.security;
+package com.flowershop.back.services.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.flowershop.back.services.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Service
-public class TokenService implements com.flowershop.back.services.TokenService {
+public class TokenServiceImpl implements TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 

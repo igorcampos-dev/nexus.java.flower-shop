@@ -1,14 +1,17 @@
 package com.flowershop.back.services.impl.email;
 
-import com.flowershop.back.configuration.Mensagens;
+import com.flowershop.back.configuration.enums.Messages;
 import com.flowershop.back.domain.ReturnResponseBody;
+import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.domain.flower.MessageDTO;
+import com.flowershop.back.domain.user.User;
 import com.flowershop.back.exceptions.FlowerNotFoundException;
 import com.flowershop.back.exceptions.InvalidEmailException;
 import com.flowershop.back.exceptions.UserNotFoundException;
 import com.flowershop.back.repositories.FlowerRepository;
 import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.services.EmailService;
+import com.flowershop.back.services.ReadersService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
@@ -32,6 +35,9 @@ public class EmailServiceImpl implements EmailService {
     FlowerRepository repository;
 
     @Autowired
+    ReadersService readersService;
+
+    @Autowired
     UserRepository userRepository;
 
     @Value("${api.java.mail.email}")
@@ -45,29 +51,32 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmailVerification(String email, String hash) {
-        String assunto = Mensagens.ASSUNTO_CONFIRMACAO;
         String url = link + "/confirme-email?hash=" + hash;
-        String mensagem = String.format(Mensagens.MENSAGEM_CONFIRMACAO, url);
+
+        String assunto = readersService.fileHtmlConfirmacao(Messages.ASSUNTOCONFIRMACAO.getValue());
+
+        String mensagem = String.format(readersService.fileHtmlConfirmacao(Messages.MENSAGEMCONFIRMACAO.getValue()), url);
 
         send(email, assunto, mensagem);
     }
 
 
     @Override
-    public void sendEmailUser(MessageDTO message){
+    public void sendEmailUser(MessageDTO message) {
 
         userRepository.findByHash(message.hash())
-                .orElseThrow(() -> new UserNotFoundException("Usuario não foi encontrado ao enviar o email!") );
+                .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ao enviar o email!"));
 
-
-        repository.findByImage(message.flower())
-                .map( flower -> {
-                    String assunto = Mensagens.ASSUNTO;
-                    String linkFlor = String.format(Mensagens.LINK_FLOR_TEMPLATE, message.flower());
-                    String mensagemFinal = String.format(Mensagens.MENSAGEM_TEMPLATE, flower.getName(), message.mensagem(), linkFlor);
-                    return send(message.email(), assunto, mensagemFinal);
-                })
+        Flowers flower = repository.findByImage(message.flower())
                 .orElseThrow(() -> new FlowerNotFoundException("Flor não encontrada"));
+
+
+        String assunto = readersService.fileSendEmail(Messages.ASSUNTO.getValue());
+        String linkFlor = String.format(readersService.fileSendEmail(Messages.LINKFLOR.getValue()), message.flower());
+        String mensagemFinal = String.format(readersService.fileSendEmail(Messages.MENSAGEM.getValue()), flower.getName(), message.mensagem(), linkFlor);
+
+
+        send(message.email(), assunto, mensagemFinal);
     }
 
     @Override
@@ -87,7 +96,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @SneakyThrows
-    public ReturnResponseBody send(String email, String assunto, String mensagem) {
+    public ReturnResponseBody send(String email, String assunto, String mensagem)  {
         if (EmailValidator.getInstance().isValid(email)) {
             try {
                 JavaMailSender emailSender = MailSender();

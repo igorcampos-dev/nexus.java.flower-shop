@@ -1,6 +1,7 @@
 package com.flowershop.back.controllers;
 
 import com.flowershop.back.domain.ReturnResponseBody;
+import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.services.ActivitiesService;
 import com.flowershop.back.services.impl.email.EmailServiceImpl;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ public class SendmessageController {
     ActivitiesService activitiesService;
 
     @PostMapping("/send-message")
-    public ResponseEntity<ReturnResponseBody> sendMessage(@RequestBody @Valid com.flowershop.back.domain.flower.MessageDTO message){
+    public ResponseEntity<ReturnResponseBody> sendMessage(@RequestBody @Valid MessageDTO message){
 
         emailService.sendEmailUser(message);
         this.activitiesService.save(message);

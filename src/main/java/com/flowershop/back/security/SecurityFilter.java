@@ -1,6 +1,7 @@
 package com.flowershop.back.security;
 
 import com.flowershop.back.repositories.UserRepository;
+import com.flowershop.back.services.impl.TokenServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
-    TokenService tokenService;
+    TokenServiceImpl tokenServiceImpl;
     @Autowired
     UserRepository userRepository;
 
@@ -24,7 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
        recoverToken(request)
                .ifPresent( token -> {
-                   var login = tokenService.validateToken(token);
+                   var login = tokenServiceImpl.validateToken(token);
                    userRepository.findByLogin(login)
                            .ifPresent( user -> {
                                var authentication = new UsernamePasswordAuthenticationToken( user, null, user.getAuthorities());
