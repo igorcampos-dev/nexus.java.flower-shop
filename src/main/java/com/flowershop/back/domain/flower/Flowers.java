@@ -15,11 +15,14 @@ public class Flowers {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String image;
-    private String name;
 
-    public Flowers(FlowerDTO data){
-        this.name = data.name();
-        this.image = data.image();
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] file;
+    private String fileName;
+
+    public Flowers(FlowerGetDatabase data){
+        this.fileName = data.fileName();
+        this.file = data.file();
     }
 }

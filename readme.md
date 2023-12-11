@@ -109,6 +109,8 @@
 - **Endpoint:** `POST /flower-shop/admin`
 - **Descrição:** Este endpoint é protegido por segurança com o Spring Security e é responsável por realizar funções com as flores cadastradas, acessível apenas pelo administrador.
 
+- **Manutnção:** `está em manutenção o docker`
+- 
 <h2 align="center">🐳 Executando o Projeto no Docker</h2>
 
 Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:

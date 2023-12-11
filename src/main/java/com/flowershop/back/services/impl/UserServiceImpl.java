@@ -4,10 +4,8 @@ import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.User;
-import com.flowershop.back.exceptions.InvalidCredentialsException;
-import com.flowershop.back.exceptions.UserAlreadyExistsException;
-import com.flowershop.back.exceptions.UserNotFoundException;
-import com.flowershop.back.exceptions.UserPendingActivationException;
+import com.flowershop.back.exceptions.*;
+import com.flowershop.back.services.TokenService;
 import com.flowershop.back.services.UserService;
 import com.flowershop.back.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,10 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    TokenService tokenService;
 
 
     @Override
@@ -31,7 +32,6 @@ public class UserServiceImpl implements UserService {
                 .ifPresent( p -> {
                     throw new UserAlreadyExistsException("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.");
                 });
-
 
         userRepository.save(user);
 
@@ -77,6 +77,20 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public void resetPassword(String hash, String pass, String key) {
+
+        if (!tokenService.isShortTokenExpired(key)){
+            userRepository.findByHash(hash)
+                    .ifPresentOrElse( user -> {
+                        user.setPassword(pass);
+                        userRepository.save(user);
+                    }, () -> new UserNotFoundException("Usuário não existe na base de dados, entre em contato com o suporte"));
+
+        } else {
+            throw new TokenExpirationException("O token está expirado");
+        }
+        }
 
 }
 

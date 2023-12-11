@@ -1,14 +1,14 @@
 package com.flowershop.back.services;
 
-import com.flowershop.back.domain.flower.FlowerDTO;
-import com.flowershop.back.domain.flower.FlowerUpdateDTO;
-import com.flowershop.back.domain.flower.Flowers;
-
+import com.flowershop.back.domain.flower.FlowerGetDatabase;
+import com.flowershop.back.domain.flower.NewFlowerDTO;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FlowerService {
-    void updateFlower( FlowerUpdateDTO flower);
-    void save(Flowers flowers);
-    List<FlowerDTO> findAll();
-    void deleteByName(String name);
+    void updateFlower( String fileName, String id, MultipartFile file);
+    void save(String fileName, MultipartFile file);
+    List<FlowerGetDatabase> findByName(String filename);
+    void deleteById(String id);
+
 }

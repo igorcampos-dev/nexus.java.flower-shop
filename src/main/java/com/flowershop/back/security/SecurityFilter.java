@@ -1,6 +1,7 @@
 package com.flowershop.back.security;
 
 import com.flowershop.back.repositories.UserRepository;
+import com.flowershop.back.services.TokenService;
 import com.flowershop.back.services.impl.TokenServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
-    TokenServiceImpl tokenServiceImpl;
+    TokenService tokenServiceImpl;
     @Autowired
     UserRepository userRepository;
 
@@ -34,7 +35,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                });
         filterChain.doFilter(request, response);
     }
-
     private Optional<String> recoverToken(HttpServletRequest request){
        return Optional.ofNullable(request.getHeader("Authorization"))
                .map( authHeader -> authHeader.replace("Bearer", "").strip());

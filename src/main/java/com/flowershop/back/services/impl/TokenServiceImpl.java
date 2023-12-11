@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.flowershop.back.services.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,16 +29,52 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public String validateToken(String token) throws JWTVerificationException {
+    public String validateToken(String token) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("auth-api")
                     .build()
                     .verify(token)
                     .getSubject();
+        } catch (JWTVerificationException e) {
+            if (e instanceof TokenExpiredException) {
+                throw (TokenExpiredException) e;
+            } else {
+                return "Erro ao validar o token: " + e.getMessage();
+            }
+        }
+    }
+
+
+    @Override
+    public String generateShortToken() throws JWTCreationException {
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+        return JWT.create()
+                .withIssuer("auth-api")
+                .withExpiresAt(genShortTokenExpirationDate())
+                .sign(algorithm);
+    }
+
+    @Override
+    public boolean isShortTokenExpired(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            Instant expiration = JWT.require(algorithm)
+                    .withIssuer("auth-api")
+                    .build()
+                    .verify(token)
+                    .getExpiresAt().toInstant();
+
+            return Instant.now().isAfter(expiration);
+        } catch (JWTVerificationException e) {
+            return true;
+        }
     }
 
     private Instant genExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
+    private Instant genShortTokenExpirationDate() {return LocalDateTime.now().plusMinutes(5).toInstant(ZoneOffset.of("-03:00"));}
+
 }

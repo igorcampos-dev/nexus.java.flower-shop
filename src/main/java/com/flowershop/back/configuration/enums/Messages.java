@@ -5,19 +5,16 @@ import lombok.Getter;
 @Getter
 public enum Messages {
 
-    ASSUNTO("Assunto.html"),
-
-    ASSUNTOCONFIRMACAO("Assunto_Confirmacao.html"),
-
-    LINKFLOR("Link_Flor.html"),
-
-    MENSAGEM("Mensagem.html"),
-
-    MENSAGEMCONFIRMACAO("Mensagem_Confirmacao.html"),
-
+    MENSAGEM("p1"),
+    ASSUNTOCONFIRMACAO("p2"),
+    MENSAGEMCONFIRMACAO("p3"),
+    ASSUNTO("p4"),
+    LINKFLOR("p5"),
+    MENSAGEMRESETSENHA("p6"),
+    ASSUNTORESETPASS("p7"),
     EMAILFALHA("emailFalha.html"),
-
-    EMAILSUCESSO("emailSucesso.html");
+    EMAILSUCESSO("emailSucesso.html"),
+    RESETSENHA("resetPassword.html");
 
 
     private final String value;

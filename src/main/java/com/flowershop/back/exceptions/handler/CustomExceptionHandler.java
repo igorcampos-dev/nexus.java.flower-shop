@@ -163,5 +163,18 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
+    @ExceptionHandler(TokenExpirationException.class)
+    public ResponseEntity<Error> tokenExpiration(HttpServletRequest s){
+        Error error = Error.builder()
+                .timestamp(instant)
+                .message("O Token está expirado")
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .path(s.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+
 
 }

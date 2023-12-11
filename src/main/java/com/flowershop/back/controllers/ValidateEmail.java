@@ -28,11 +28,10 @@ public class ValidateEmail {
     @GetMapping("/confirme-email")
     public ResponseEntity<String> confirmeEmail(@RequestParam(name = "hash", required = false, defaultValue = "null") String hash) {
         HttpHeaders headers = new HttpHeaders();
-
         headers.setContentType(MediaType.TEXT_HTML);
         userService.updateStatus(hash);
-
         return new ResponseEntity<>(readersService.fileHtmlConfirmacao(Messages.EMAILSUCESSO.getValue()), headers, HttpStatus.OK);
     }
+
 
 }

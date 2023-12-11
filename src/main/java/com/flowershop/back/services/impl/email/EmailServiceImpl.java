@@ -12,6 +12,7 @@ import com.flowershop.back.repositories.FlowerRepository;
 import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.services.EmailService;
 import com.flowershop.back.services.ReadersService;
+import com.flowershop.back.services.TokenService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
@@ -19,16 +20,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Properties;
 
 
 @Service
-@Slf4j
 public class EmailServiceImpl implements EmailService {
 
     @Autowired
@@ -39,6 +45,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TokenService tokenService;
 
     @Value("${api.java.mail.email}")
     private  String emailAdmin;
@@ -53,31 +62,35 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailVerification(String email, String hash) {
         String url = link + "/confirme-email?hash=" + hash;
 
-        String assunto = readersService.fileHtmlConfirmacao(Messages.ASSUNTOCONFIRMACAO.getValue());
+        String assunto = readersService.usePhrases(Messages.ASSUNTOCONFIRMACAO.getValue());
 
-        String mensagem = String.format(readersService.fileHtmlConfirmacao(Messages.MENSAGEMCONFIRMACAO.getValue()), url);
+        String mensagem = String.format(readersService.usePhrases(Messages.MENSAGEMCONFIRMACAO.getValue()), url);
 
-        send(email, assunto, mensagem);
+        send(email, assunto, mensagem, null, null);
     }
 
 
+    @SneakyThrows
     @Override
     public void sendEmailUser(MessageDTO message) {
-
         userRepository.findByHash(message.hash())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ao enviar o email!"));
 
-        Flowers flower = repository.findByImage(message.flower())
+        Flowers flower = repository.findByFileName(message.flower())
                 .orElseThrow(() -> new FlowerNotFoundException("Flor não encontrada"));
 
 
-        String assunto = readersService.fileSendEmail(Messages.ASSUNTO.getValue());
-        String linkFlor = String.format(readersService.fileSendEmail(Messages.LINKFLOR.getValue()), message.flower());
-        String mensagemFinal = String.format(readersService.fileSendEmail(Messages.MENSAGEM.getValue()), flower.getName(), message.mensagem(), linkFlor);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(ImageIO.read(new ByteArrayInputStream(flower.getFile())), "jpg", baos);
+        Resource imageResource = new ByteArrayResource(baos.toByteArray());
 
 
-        send(message.email(), assunto, mensagemFinal);
+        String assunto = readersService.usePhrases(Messages.ASSUNTO.getValue());
+        String mensagemFinal = String.format(readersService.usePhrases(Messages.MENSAGEM.getValue()), flower.getFileName(), message.mensagem());
+        send(message.email(), assunto, mensagemFinal, flower.getFileName().concat(".jpg"), imageResource);
     }
+
+
 
     @Override
     public JavaMailSender MailSender() {
@@ -95,8 +108,21 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    public void sendEmailResetPass(String email) {
+        User user = userRepository.findByLogin(email)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não existe na base de dados, houve um erro, entre em contato com o suporte"));
+        String key =  tokenService.generateShortToken();
+        String url = link + "/auth/reset-password?hash=" + user.getHash() + "&key=" + key;
+        String assunto = readersService.usePhrases(Messages.ASSUNTORESETPASS.getValue());
+        String mensagem = String.format(readersService.usePhrases(Messages.MENSAGEMRESETSENHA.getValue()), url);
+
+        send(user.getLogin(), assunto, mensagem, null, null);
+    }
+
+
+    @Override
     @SneakyThrows
-    public ReturnResponseBody send(String email, String assunto, String mensagem)  {
+    public ReturnResponseBody send(String email, String assunto, String mensagem, String filename, Resource image)  {
         if (EmailValidator.getInstance().isValid(email)) {
             try {
                 JavaMailSender emailSender = MailSender();
@@ -108,6 +134,7 @@ public class EmailServiceImpl implements EmailService {
                 helper.setSubject(assunto);
                 helper.setSentDate(new Date());
                 helper.setText(mensagem, true);
+                if (filename != null && image != null){ helper.addAttachment(Objects.requireNonNull(filename), image);}
                 emailSender.send(message);
 
                 return new ReturnResponseBody("Email enviado com sucesso");
