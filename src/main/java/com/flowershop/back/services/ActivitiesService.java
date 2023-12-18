@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ActivitiesService {
     void save(MessageDTO message);
-    List<ActivitiesResponseDTO> findAll();
+    List<ActivitiesResponseDTO> findAllById(String id);
 }

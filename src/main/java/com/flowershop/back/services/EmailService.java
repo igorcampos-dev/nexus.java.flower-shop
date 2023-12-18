@@ -10,6 +10,6 @@ public interface EmailService {
     void sendEmailVerification(String email, String hash);
     void sendEmailUser(MessageDTO message);
     JavaMailSender MailSender();
-    void sendEmailResetPass(String email);
+    void sendEmailResetPass(String email, String hash);
     ReturnResponseBody send(String email, String assunto, String mensagem, String filename, Resource image);
 }

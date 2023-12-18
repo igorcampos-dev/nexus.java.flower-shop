@@ -2,17 +2,19 @@ package com.flowershop.back.security;
 
 import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.services.TokenService;
-import com.flowershop.back.services.impl.TokenServiceImpl;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -23,8 +25,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-       recoverToken(request)
+    protected void doFilterInternal(@Nullable @NotBlank HttpServletRequest request, @Nullable @NotBlank HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
+       recoverToken(Objects.requireNonNull(request))
                .ifPresent( token -> {
                    var login = tokenServiceImpl.validateToken(token);
                    userRepository.findByLogin(login)

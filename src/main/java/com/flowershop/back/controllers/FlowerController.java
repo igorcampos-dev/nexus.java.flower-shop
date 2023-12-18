@@ -21,6 +21,7 @@ public class FlowerController {
     @SneakyThrows
     @PostMapping("/register-flower/{fileName}")
     public ResponseEntity<ReturnResponseBody> postProduct(@Valid @PathVariable String fileName, @RequestParam("file") MultipartFile file){
+        System.out.println("chamou " + fileName );
         this.flowerService.save(fileName, file);
         return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Flor cadastrada!"));
     }

@@ -24,10 +24,8 @@ public class SendmessageController {
 
     @PostMapping("/send-message")
     public ResponseEntity<ReturnResponseBody> sendMessage(@RequestBody @Valid MessageDTO message){
-
         emailService.sendEmailUser(message);
         this.activitiesService.save(message);
-
         return ResponseEntity.ok().body(new ReturnResponseBody("Email enviado com sucesso!"));
     }
 

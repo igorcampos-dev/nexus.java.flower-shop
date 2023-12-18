@@ -18,6 +18,7 @@ public class TokenServiceImpl implements TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
+
     @Override
     public String generateToken(UserDetails user) throws JWTCreationException{
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -37,44 +38,14 @@ public class TokenServiceImpl implements TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException e) {
-            if (e instanceof TokenExpiredException) {
-                throw (TokenExpiredException) e;
-            } else {
-                return "Erro ao validar o token: " + e.getMessage();
+
+        } catch (TokenExpiredException e) {
+                throw new com.flowershop.back.exceptions.TokenExpiredException("Erro ao validar o token: " + e.getMessage());
             }
         }
-    }
-
-
-    @Override
-    public String generateShortToken() throws JWTCreationException {
-        Algorithm algorithm = Algorithm.HMAC256(secret);
-        return JWT.create()
-                .withIssuer("auth-api")
-                .withExpiresAt(genShortTokenExpirationDate())
-                .sign(algorithm);
-    }
-
-    @Override
-    public boolean isShortTokenExpired(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            Instant expiration = JWT.require(algorithm)
-                    .withIssuer("auth-api")
-                    .build()
-                    .verify(token)
-                    .getExpiresAt().toInstant();
-
-            return Instant.now().isAfter(expiration);
-        } catch (JWTVerificationException e) {
-            return true;
-        }
-    }
 
     private Instant genExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
-    private Instant genShortTokenExpirationDate() {return LocalDateTime.now().plusMinutes(5).toInstant(ZoneOffset.of("-03:00"));}
 
 }

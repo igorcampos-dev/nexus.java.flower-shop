@@ -1,17 +1,21 @@
 package com.flowershop.back.domain.user;
 
+import com.flowershop.back.configuration.annotations.isValid;
 import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "hash_idx", columnList = "hash", unique = true),
+        @Index(name = "login_idx", columnList = "login", unique = true)
+})
 @Entity(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,10 +33,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @isValid
+    @Email
     @Column(unique = true)
     private String login;
 
+    @isValid
+    @Column(unique = true)
     private String hash;
+
+    @isValid
     private String password;
 
 

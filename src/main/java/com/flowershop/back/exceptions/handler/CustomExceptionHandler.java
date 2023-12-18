@@ -3,15 +3,17 @@ package com.flowershop.back.exceptions.handler;
 import com.flowershop.back.exceptions.*;
 import com.flowershop.back.exceptions.object.Error;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
-
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -126,20 +128,6 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
-
-    @ExceptionHandler(TokenErrorException.class)
-    public ResponseEntity<Error> tokenErrorException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Um erro ocorreu na criação do token")
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
-
-
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Error> methodArgumentNotValidException(HttpServletRequest s){
         Error error = Error.builder()
@@ -162,19 +150,37 @@ public class CustomExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Error> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest s) {
+        StringBuilder errorMessage = new StringBuilder();
 
-    @ExceptionHandler(TokenExpirationException.class)
-    public ResponseEntity<Error> tokenExpiration(HttpServletRequest s){
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errorMessage.append(String.format(
+                    "o campo '%s' %s",
+                    violation.getPropertyPath(),
+                    violation.getMessage()));
+        }
+
         Error error = Error.builder()
                 .timestamp(instant)
-                .message("O Token está expirado")
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(errorMessage.toString())
+                .status(HttpStatus.BAD_REQUEST.value())
                 .path(s.getRequestURI())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseBody
+    public ResponseEntity<Error> handleTokenVerificationException(HttpServletRequest s) {
+        Error error = Error.builder()
+                .timestamp(instant)
+                .message("Token inválido")
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .path(s.getRequestURI())
+                .build();
 
-
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
 }

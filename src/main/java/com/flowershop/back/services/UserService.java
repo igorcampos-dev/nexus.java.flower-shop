@@ -8,6 +8,4 @@ public interface UserService {
       void updateStatus(String hash);
       String validateUser(AuthenticationDTO users);
       User createUser(AuthenticationDTO data, String hash, String pass);
-      void resetPassword(String hash, String pass, String key);
-
 }

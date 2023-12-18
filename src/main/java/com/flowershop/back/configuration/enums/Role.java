@@ -1,14 +1,17 @@
 package com.flowershop.back.configuration.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
 
     ADMIN("ADMIN"),
 
     USER("USER");
 
-    private String permitions;
+    private final String value;
 
-    Role(String permitions){
-        this.permitions = permitions;
+    Role(String value){
+        this.value = value;
     }
 }

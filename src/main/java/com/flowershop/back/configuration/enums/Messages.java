@@ -13,8 +13,7 @@ public enum Messages {
     MENSAGEMRESETSENHA("p6"),
     ASSUNTORESETPASS("p7"),
     EMAILFALHA("emailFalha.html"),
-    EMAILSUCESSO("emailSucesso.html"),
-    RESETSENHA("resetPassword.html");
+    EMAILSUCESSO("emailSucesso.html");
 
 
     private final String value;

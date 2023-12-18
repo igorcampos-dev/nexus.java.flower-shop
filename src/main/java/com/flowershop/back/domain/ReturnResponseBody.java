@@ -1,4 +1,5 @@
 package com.flowershop.back.domain;
 
-public record ReturnResponseBody(String message) {
+import com.flowershop.back.configuration.annotations.isValid;
+public record ReturnResponseBody(@isValid String message) {
 }

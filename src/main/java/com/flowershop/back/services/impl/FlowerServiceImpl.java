@@ -4,8 +4,8 @@ import com.flowershop.back.domain.flower.FlowerGetDatabase;
 import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.exceptions.FlowerAlreadyExistsException;
 import com.flowershop.back.exceptions.FlowerNotFoundException;
-import com.flowershop.back.services.FlowerService;
 import com.flowershop.back.repositories.FlowerRepository;
+import com.flowershop.back.services.FlowerService;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static com.flowershop.back.configuration.UtilsProject.replaceFilename;
 @Service
 public class FlowerServiceImpl implements FlowerService {
     @Autowired
-    FlowerRepository repository;
+    FlowerRepository flowerRepository;
 
     @SneakyThrows
     @Override
@@ -27,20 +27,25 @@ public class FlowerServiceImpl implements FlowerService {
         String newFileName = replaceFilename(fileName);
         byte[] bytes = file.getBytes();
 
-        repository.findById(id)
-                .filter(existingFlower -> !existingFlower.getFileName().equals(newFileName))
+        flowerRepository.findById(id)
+                .filter(existingFlower -> !existingFlower.getFilename().equals(newFileName))
                 .map(existingFlower -> {
 
-                    repository.findByFileName(newFileName)
+                    flowerRepository.findByFilename(newFileName)
                             .ifPresent(s -> {
                                 throw new FlowerAlreadyExistsException("Nome da flor já existe na base de dados");
                             });
 
-                    existingFlower.setFileName(newFileName);
+                    flowerRepository.findByFile(bytes)
+                                    .ifPresent(s -> {
+                                        throw new FlowerAlreadyExistsException("Imagem da flor já existe na base de dados");
+                                    });
+
+                    existingFlower.setFilename(newFileName);
                     existingFlower.setFile(bytes);
-                    repository.save(existingFlower);
+                    flowerRepository.save(existingFlower);
                     return true;
-                }).orElseThrow(() -> new FlowerNotFoundException("Flor não existente na base de dados"));
+                }).orElseThrow(() -> new FlowerAlreadyExistsException("Flor não existente na base de dados"));
 
     }
 
@@ -50,10 +55,11 @@ public class FlowerServiceImpl implements FlowerService {
         String newFileName = replaceFilename(fileName);
         byte[] bytes = file.getBytes();
 
-        repository.findByFileName(newFileName)
+        flowerRepository.findByFile(bytes).ifPresent( (s) -> {throw new FlowerAlreadyExistsException("Flor já existe, escolha outra imagem!");});
+        flowerRepository.findByFilename(newFileName)
                 .ifPresentOrElse(flowerExists -> {
-                            throw new FlowerAlreadyExistsException("Flor já existe, escolha outras informações!");
-                        }, ()-> repository.save(new Flowers(new FlowerGetDatabase(newFileName, bytes)))
+                            throw new FlowerAlreadyExistsException("Flor já existe, escolha outro nome!");
+                        }, ()-> flowerRepository.save(new Flowers(new FlowerGetDatabase(newFileName, bytes)))
                 );
     }
 
@@ -62,18 +68,18 @@ public class FlowerServiceImpl implements FlowerService {
     @Override
     public List<FlowerGetDatabase> findByName(String fileName) {
         String newFileName = replaceFilename(fileName);
-        return this.repository.findByFileName(newFileName)
+        return this.flowerRepository.findByFilename(newFileName)
                 .stream()
-                .map(flower -> new FlowerGetDatabase(flower.getFileName().replace("%20", " "), flower.getFile()))
+                .map(flower -> new FlowerGetDatabase(flower.getFilename().replace("%20", " "), flower.getFile()))
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public void deleteById(String id) {
-        repository.findById(id)
+        flowerRepository.findById(id)
                 .ifPresentOrElse(
-                        flower -> repository.deleteById(id),
+                        flower -> flowerRepository.deleteById(id),
                         () -> {
                             throw new FlowerNotFoundException("Não existe flor com este id");
                         }

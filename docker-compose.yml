@@ -7,5 +7,4 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 3570951
       MYSQL_DATABASE: floricultura
-    volumes:
-      - ./mysql-init:/docker-entrypoint-initdb.d
+

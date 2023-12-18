@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface FlowerRepository extends JpaRepository<Flowers, String> {
-   Optional<Flowers> findByFileName(String fileName);
+   Optional<Flowers> findByFilename(String fileName);
+
+   Optional<Flowers> findByFile(byte[] file);
 }

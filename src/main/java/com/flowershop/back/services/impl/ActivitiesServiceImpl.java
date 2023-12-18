@@ -5,11 +5,12 @@ import com.flowershop.back.domain.activities.ActivitiesResponseDTO;
 import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.exceptions.UserNotFoundException;
-import com.flowershop.back.services.ActivitiesService;
 import com.flowershop.back.repositories.ActivitiesRepository;
 import com.flowershop.back.repositories.UserRepository;
+import com.flowershop.back.services.ActivitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ActivitiesServiceImpl implements ActivitiesService {
         Activities activities = Activities.builder()
                 .user(user.getLogin())
                 .remittent(message.email())
-                .localDateTime(LocalDateTime.now())
+                .datetime(LocalDateTime.now())
                 .build();
 
         activitiesRepository.save(activities);
@@ -39,7 +40,8 @@ public class ActivitiesServiceImpl implements ActivitiesService {
 
 
     @Override
-    public List<ActivitiesResponseDTO> findAll() {
-      return  this.activitiesRepository.findAll().stream().map(ActivitiesResponseDTO::new).toList();
+    public List<ActivitiesResponseDTO> findAllById(String id) {
+       User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário não existe"));
+      return  this.activitiesRepository.findByUser(user.getLogin()).stream().map(ActivitiesResponseDTO::new).toList();
     }
 }

@@ -6,18 +6,14 @@ import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.exceptions.FlowerNotFoundException;
-import com.flowershop.back.exceptions.InvalidEmailException;
 import com.flowershop.back.exceptions.UserNotFoundException;
 import com.flowershop.back.repositories.FlowerRepository;
 import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.services.EmailService;
 import com.flowershop.back.services.ReadersService;
-import com.flowershop.back.services.TokenService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -25,7 +21,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,21 +31,20 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Properties;
 
+import static com.flowershop.back.configuration.UtilsProject.randomHash;
+
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
     @Autowired
-    FlowerRepository repository;
+    FlowerRepository flowerRepository;
 
     @Autowired
     ReadersService readersService;
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    TokenService tokenService;
 
     @Value("${api.java.mail.email}")
     private  String emailAdmin;
@@ -76,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
         userRepository.findByHash(message.hash())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ao enviar o email!"));
 
-        Flowers flower = repository.findByFileName(message.flower())
+        Flowers flower = flowerRepository.findByFilename(message.flower().replace("%20", " "))
                 .orElseThrow(() -> new FlowerNotFoundException("Flor não encontrada"));
 
 
@@ -86,8 +83,8 @@ public class EmailServiceImpl implements EmailService {
 
 
         String assunto = readersService.usePhrases(Messages.ASSUNTO.getValue());
-        String mensagemFinal = String.format(readersService.usePhrases(Messages.MENSAGEM.getValue()), flower.getFileName(), message.mensagem());
-        send(message.email(), assunto, mensagemFinal, flower.getFileName().concat(".jpg"), imageResource);
+        String mensagemFinal = String.format(readersService.usePhrases(Messages.MENSAGEM.getValue()), flower.getFilename(), message.mensagem());
+        send(message.email(), assunto, mensagemFinal, flower.getFilename().concat(".jpg"), imageResource);
     }
 
 
@@ -108,22 +105,24 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendEmailResetPass(String email) {
-        User user = userRepository.findByLogin(email)
-                .orElseThrow(() -> new UserNotFoundException("Usuário não existe na base de dados, houve um erro, entre em contato com o suporte"));
-        String key =  tokenService.generateShortToken();
-        String url = link + "/auth/reset-password?hash=" + user.getHash() + "&key=" + key;
-        String assunto = readersService.usePhrases(Messages.ASSUNTORESETPASS.getValue());
-        String mensagem = String.format(readersService.usePhrases(Messages.MENSAGEMRESETSENHA.getValue()), url);
+    public void sendEmailResetPass(String email, String hash) {
+        String newPass = randomHash(12);
 
-        send(user.getLogin(), assunto, mensagem, null, null);
+        User user = userRepository.findByLoginAndHash(email, hash)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+
+        user.setPassword(new BCryptPasswordEncoder().encode(newPass));
+        userRepository.save(user);
+        String assunto = readersService.usePhrases(Messages.ASSUNTORESETPASS.getValue());
+        String mensagemFinal = String.format(readersService.usePhrases(Messages.MENSAGEMRESETSENHA.getValue()), newPass);
+        send(email, assunto, mensagemFinal, null, null);
     }
+
 
 
     @Override
     @SneakyThrows
     public ReturnResponseBody send(String email, String assunto, String mensagem, String filename, Resource image)  {
-        if (EmailValidator.getInstance().isValid(email)) {
             try {
                 JavaMailSender emailSender = MailSender();
                 MimeMessage message = emailSender.createMimeMessage();
@@ -141,9 +140,6 @@ public class EmailServiceImpl implements EmailService {
             } catch (MessagingException e) {
                 throw new MessagingException("O servidor encontrou uma falha ao tentar enviar o email. Por favor, tente novamente mais tarde.");
             }
-        } else {
-            throw new InvalidEmailException("Email inválido. Verifique o formato do email fornecido.");
-        }
     }
 
 

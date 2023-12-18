@@ -1,145 +1,168 @@
-<h1 align="center" style="color: blue;">
-  Floricultura Online
-</h1>
-
 <div align="center">
-  <img src="https://img.shields.io/badge/Linguagem-Java-red" alt="Java">
-  <img src="https://img.shields.io/badge/Frontend-React-blue" alt="React">
-  <a href="https://github.com/seu-usuario/seu-repositorio/releases">
-    <img src="https://img.shields.io/badge/Vers%C3%A3o-1.0-blue.svg" alt="Versão">
-  </a>
-  <a href="https://instagram.com/igor_de_campos_">
-    <img src="https://img.shields.io/badge/Instagram-igor_de_campos__-brightgreen.svg" alt="Instagram">
-  </a>
+
+# API Flower Shop
+
+![API](https://img.shields.io/badge/API-Flower%20Shop-green)
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Postman](https://img.shields.io/badge/Postman-0290fcf9--6615--4929--9482--3d6375ae110e-blue)
+![License](https://img.shields.io/badge/License-MIT-blue)
 </div>
 
-<p align="center">
-  Bem-vindo ao Projeto de Floricultura, uma plataforma de envio de flores e mensagens personalizadas.
-</p>
+## Overview
+A API Flower Shop é uma API de floricultura que oferece uma variedade de endpoints para gerenciar usuários e operações relacionadas a flores.
 
-<h2 align="center">🌟 Recursos Principais</h2>
+## Autenticação
+Para acessar os recursos protegidos, incluindo operações CRUD de flores, certifique-se de ter a função **ADMIN**.
 
-<p align="center">
-  <strong>Autenticação Segura:</strong> Utilizamos o Spring Security para garantir que seus dados estejam protegidos.<br><br>
-  <strong>Envio de Mensagens Personalizadas:</strong> Crie mensagens especiais para acompanhar suas flores.<br><br>
-</p>
+## Pré-requisitos
 
-<h2 align="center">🚀 Início Rápido</h2>
-<div>
-  <div align="center">
-    <h3>Configurando o Projeto:</h3>
-  </div>
+Para executar este projeto, você precisa ter instalado:
 
-  <p>1. <strong>Clone o repositório</strong>:</p>
-  <code>git clone https://github.com/igorcampos-dev/flower_shop-api-java</code>
-
-  <div align="center">
-    <h4>Configuração do Ambiente:</h4>
-  </div>
-
-  <p>2. <strong>Crie um esquema no MySQL chamado "floricultura"</strong>.</p>
-  <p>Certifique-se de ter o MySQL instalado.</p>
-
-  <p>3. <strong>Configure as variáveis de ambiente</strong>:</p>
+- JDK 17
+- Uma versão compatível do Maven
+- Para o banco de dados, você deve saber o seu ip, para usar ele no application.properties como variavel de conexao do banco de dados
+- Você pode usar abrir o postman e importar todas as rotas disponiveis na pasta /endpoints-postman/Api-flowershop.postman_collection.json
+- <p><strong>Configure as variáveis de ambiente</strong>:</p>
   <p><code>api.java.mail.email</code> e <code>api.java.mail.password</code> são necessárias para o projeto.</p>
   <p>Assista ao <a href="https://www.youtube.com/watch?v=bK5j-GDhq8M&feature=youtu.be">vídeo de configuração</a>.</p>
 
-  <p>4. <strong>Acesse a aplicação</strong> em seu navegador:</p>
-  <p><a href="http://localhost:8080/auth/login">http://localhost:8080/auth/login</a></p>
-</div>
+
+## 🛠️ Tecnologias
+
+### Backend
+
+- **Java:** Linguagem de programação poderosa.
+- **Spring Boot:** Framework para desenvolvimento ágil.
+- **Spring Security:** Autenticação e segurança de classe empresarial.
+- **MySQL:** Banco de dados confiável.
+- **JavaMail:** Envio de emails eficiente.
+- **Lombok:** Biblioteca para redução de boilerplate.
+- **Hibernate Validator:** Framework para validação de dados.
+
+## Endpoints
+
+### 1. Registro de Usuário
+
+- **Endpoint:** `localhost:8085/auth/register`
+- **Método:** POST
+- **Autenticação:** Sem autenticação
+- **Corpo da Requisição (JSON):**
+  ```json
+  {
+      "login": "igorccampos9@gmail.com",
+      "password": "224654"
+  }
+
+### 2. Login de Usuário
+
+- **Endpoint:** `localhost:8085/auth/login`
+- **Método:** POST
+- **Autenticação:** Sem autenticação
+- **Corpo da Requisição (JSON):**
+  ```json
+  {
+  "login": "igorccampos9@gmail.com",
+  "password": "224654"
+  }
+
+### 3. Alteração de Senha
+
+- **Endpoint:** `localhost:8085/auth/alter-password/{email}/{hash}`
+- **Método:** POST
+- **Autenticação:** Bearer Token
+- **Corpo da Requisição (PathVariable):**
+  ```json
+  localhost:8085/auth/alter-password/igorccampos9@gmail.com/dA58Cw0n8EwJdBlKtL3eSiv2ksFbg9drWx9xkuyB3AcMR3Pt
+
+### 4. Registro de Flor
+
+- **Endpoint:** `localhost:8085/flower-shop/register-flower/{filename}`
+- **Método:** POST
+- **Autenticação:** Bearer Token
+- **Parâmetros de URL:**
+- **{filename}:** Nome do arquivo
+- **Corpo da Requisição:** Formulário com um arquivo de imagem
+- **Descrição:** Registra uma nova flor na loja.
+
+### 5. Exclusão de Flor
+
+- **Endpoint:** `localhost:8085/flower-shop/delete/{id}`
+- **Método:** DELETE
+- **Autenticação:** Bearer Token
+- **Parâmetros de URL:**
+- **{id}:** ID da flor a ser excluída
+- **Descrição:** Exclui uma flor da loja.
+
+### 6. Visualização de Flores
+- **Método:** GET
+- **URL:** `localhost:8085/flower-shop/see-flowers/{filename}`
+- **Autenticação:** Bearer Token
+- **Parâmetros de URL:**
+- **{filename}:** Nome do arquivo
+- **Descrição:** Obtém informações sobre uma flor específica na loja.
+
+### 7. Atividades de envio de E-mails
+- **Método:** **GET**
+- **URL:** `localhost:8085/flower-shop/activities?hash={hash}`
+- **Autenticação:** Bearer Token
+- **Parâmetros de Query:**
+- **hash:** Hash para identificação de atividades
+- **Descrição:** Obtém atividades relacionadas ao usuário.
+
+### 8. Atualização de Flor
+- **Método:** PUT
+- **URL:** `localhost:8085/flower-shop/update-flower/{id}/{newFilename}`
+- **utenticação:** Sem autenticação
+- **Parâmetros de URL:**
+- **{id}:** ID da flor a ser atualizada
+- **{newFilename}:** Novo nome do arquivo
+- **Descrição:** Atualiza informações sobre uma flor na loja.
+
+### 9. Envio de Mensagem
+- **Método:** POST
+- **URL:** `localhost:8085/flower-shop/send-message`
+- **Autenticação:** Bearer Token
+- **Corpo da Requisição:**
+  ```json
+  {
+  "email": "igorccampos9@gmail.com",
+  "mensagem": "e ai igor, tudo bem?",
+  "flower": "margarida",
+  "hash": "dA58Cw0n8EwJdBlKtL3eSiv2ksFbg9drWx9xkuyB3AcMR3Pt"
+  }
 
 
-<h2 align="center">🛠️ Tecnologias</h2>
-
-<h3 align="center">Backend</h3>
-
-<p align="center">
-  <strong>Java:</strong> Linguagem de programação poderosa.<br><br>
-  <strong>Spring Boot:</strong> Framework para desenvolvimento ágil.<br><br>
-  <strong>Spring Security:</strong> Autenticação e segurança de classe empresarial.<br><br>
-  <strong>MySQL:</strong> Banco de dados confiável.<br><br>
-  <strong>JavaMail:</strong> Envio de emails eficiente.<br><br>
-  <strong>Lombok:</strong> Biblioteca para redução de boilerplate.<br><br>
-  <strong>Hibernate Validator:</strong> Framework para validação de dados.<br><br>
-</p>
-
-<h3 align="center">Frontend</h3>
-
-<p align="center">
-  <strong>React:</strong> Biblioteca JavaScript para construção de interfaces.<br><br>
-</p>
-
-<h2 align="center">🔗 Endpoints</h2>
-
-<h3 align="center">Autenticação e Registro</h3>
-
-- **Tela de Login (Pendências do Frontend):**
-
-  - **Endpoint:** `POST /auth/login`
-  - **Descrição:** Responsável por efetuar o login, recebendo informações do front-end em formato JSON.
-
-- **Tela de Registro (Pendências do Frontend):**
-
-  - **Endpoint:** `POST /auth/register`
-  - **Descrição:** Possui um endpoint que recebe informações do usuário do front-end em formato JSON.
-
-<h3 align="center">Menu Principal -(pendente fazer front-end)</h3>
-
-- **Ver Flores (Pendências do Frontend):**
-
-  - **Endpoint:** `GET /flower-shop/see-flowers`
-  - **Descrição:** A página renderiza as flores disponíveis no banco de dados, permitindo que o usuário escolha a flor que deseja enviar.
-
-- **Enviar uma Flor (Pendências do Frontend):**
-
-  - **Endpoint:** `POST /flower-shop/send-message`
-  - **Descrição:** Responsável por receber mensagens, processá-las e utilizar o JavaMail para enviar uma mensagem ao destinatário.
-
-- **Atividades de Email (Pendências do Frontend):**
-
-  - **Endpoint:** `GET /flower-shop/activities`
-  - **Descrição:** Fornecerá informações ao frontend, como horário de envio e remetente, indicando as ações realizadas pelo usuário no site.
-
-- **Suporte/Sobre Nós (Pendências do Frontend):**
-
-- **Endpoint:** Não haverá, tudo é feito no frontend.
-
-<h3 align="center">Endpoint de Admin (Ainda Pendente)</h3>
-
-- **Endpoint:** `POST /flower-shop/admin`
-- **Descrição:** Este endpoint é protegido por segurança com o Spring Security e é responsável por realizar funções com as flores cadastradas, acessível apenas pelo administrador.
-
-- **Manutnção:** `está em manutenção o docker`
-- 
-<h2 align="center">🐳 Executando o Projeto no Docker</h2>
+## 🐳 Executando o Projeto no Docker
 
 Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:
 
-📦 **Passo 1: Crie um novo JAR do projeto (configure antes as variáveis de ambiente explicado no início do readme)**
+### 📦 Passo 1: Crie um novo JAR do projeto
+Antes de começar, configure as variáveis de ambiente explicadas no início do README. No diretório raiz do projeto, execute o seguinte comando para criar um novo JAR. Certifique-se de pular os testes durante o processo:
+<code>
+mvn clean install -DskipTests
+</code>
 
-No diretório raiz do projeto, execute o seguinte comando para criar um novo JAR. Certifique-se de pular os testes durante o processo:
+### 🐋 Passo 2: Atualize a base de dados
+Atualize o arquivo `application.properties` com o link correto da base de dados, conforme comentado abaixo.
 
- <code> mvn clean install -DskipTests</code><br><br>
+### ▶️ Passo 3: Inicie o contêiner Docker do MySQL
+Inicie o contêiner Docker do MySQL usando o arquivo docker-compose do projeto. Execute o seguinte comando para criar o contêiner Docker com o projeto:
+<code>
+docker compose up
+</code>
+Após ele rodar e se estabilizar, prossiga para o próximo passo.
 
-🐋 Passo 3: Troque a database da base de dados
-
-  <code> application.properties </code><br><br> 
-
-*pro link correto comentado abaixo
-
-🐋 Passo 2: Crie a imagem Docker
-
-Após a geração do JAR, verifique se o arquivo Dockerfile está presente no projeto. Se estiver presente, execute o seguinte comando para criar a imagem Docker. Substitua {nome do projeto} pelo nome desejado para a imagem:
-
- <code> docker build -t {nome do projeto} .</code><br><br>
-
-Exemplo:
-
- <code> docker build -t java-api .</code><br><br>
-
-▶️ Passo 3: Inicie o contêiner Docker com o aplicativo (arquivo docker-compose) do projeto)
-
-Execute o seguinte comando para criar o contêiner Docker com o projeto.
-
-  <code> docker compose up </code><br><br>
+### Passo 4: Crie a imagem Docker do projeto Java
+Após a geração do JAR, verifique se o arquivo Dockerfile está presente no projeto. Se estiver presente, execute o seguinte comando para criar a imagem Docker. Substitua `{nome do projeto}` pelo nome desejado para a imagem:
+<code>
+docker build -t {nome do projeto} .
+</code>
+Por exemplo:
+<code>
+docker build -t java-api .
+</code>
+Após isso, execute o seguinte comando:
+<code>
+docker run -p 8085:8080 {nome da sua imagem}
+</code>
 

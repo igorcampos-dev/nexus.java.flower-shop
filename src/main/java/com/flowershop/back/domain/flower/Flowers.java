@@ -1,9 +1,13 @@
 package com.flowershop.back.domain.flower;
 
+import com.flowershop.back.configuration.annotations.isValid;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "flowers")
+@Table(name = "flowers", indexes = {
+        @Index(name = "id_idx", columnList = "id", unique = true),
+        @Index(name = "filename_idx", columnList = "filename", unique = true)
+})
 @Entity(name = "flowers")
 @Getter
 @NoArgsConstructor
@@ -17,12 +21,15 @@ public class Flowers {
     private String id;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "LONGBLOB", unique = true)
     private byte[] file;
-    private String fileName;
+
+    @isValid
+    @Column(unique = true)
+    private String filename;
 
     public Flowers(FlowerGetDatabase data){
-        this.fileName = data.fileName();
+        this.filename = data.fileName();
         this.file = data.file();
     }
 }

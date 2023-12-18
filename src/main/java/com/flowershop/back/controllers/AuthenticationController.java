@@ -2,7 +2,6 @@ package com.flowershop.back.controllers;
 
 import com.flowershop.back.configuration.UtilsProject;
 import com.flowershop.back.configuration.annotations.isValid;
-import com.flowershop.back.configuration.enums.Messages;
 import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.user.AuthenticationDTO;
 import com.flowershop.back.domain.user.LoginResponseDTO;
@@ -11,13 +10,10 @@ import com.flowershop.back.services.EmailService;
 import com.flowershop.back.services.ReadersService;
 import com.flowershop.back.services.TokenService;
 import com.flowershop.back.services.UserService;
-import com.flowershop.back.services.impl.TokenServiceImpl;
-import com.flowershop.back.services.impl.email.EmailServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,7 +51,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<ReturnResponseBody> register(@RequestBody @Valid AuthenticationDTO data){
-        String hash = UtilsProject.randomHash();
+        String hash = UtilsProject.randomHash(48);
         String pass = new BCryptPasswordEncoder().encode(data.password());
         User user = this.userService.createUser(data, hash, pass);
         this.userService.save(user);
@@ -64,33 +60,10 @@ public class AuthenticationController {
     }
 
 
-    @PostMapping("/alter-password/{email}")
-    public ResponseEntity<ReturnResponseBody> alterPass(@PathVariable("email") String email){
-        this.emailService.sendEmailResetPass(email);
+    @PostMapping("/alter-password/{email}/{hash}")
+    public ResponseEntity<ReturnResponseBody> alterPass(@PathVariable("email") @Email @isValid String email, @PathVariable("hash") @isValid String hash){
+        this.emailService.sendEmailResetPass(email, hash);
         return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Enviamos um email para sua conta, indicando o passo a passo para fazer a troca de senha."));
 
     }
-
-    @GetMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestParam(name = "hash", required = false, defaultValue = "null") String hash,
-                                                @RequestParam(name = "key", required = false, defaultValue = "null") String key) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_HTML);
-        return new ResponseEntity<>(readersService.fileHtmlConfirmacao(Messages.RESETSENHA.getValue()), headers, HttpStatus.OK);
-    }
-
-
-    @PostMapping("/reset-password/{hash}/{pass}/{key}")
-    public ResponseEntity<ReturnResponseBody> reset(@isValid @PathVariable("hash") String hash,
-                                                    @isValid @PathVariable("pass") String pass,
-                                                    @isValid @PathVariable("key") String key){
-
-        String password = new BCryptPasswordEncoder().encode(pass);
-        this.userService.resetPassword(hash, password, key);
-        return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Senha alterada"));
-    }
-
-
-
-
 }
