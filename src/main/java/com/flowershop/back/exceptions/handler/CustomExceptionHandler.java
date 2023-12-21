@@ -2,7 +2,6 @@ package com.flowershop.back.exceptions.handler;
 
 import com.flowershop.back.exceptions.*;
 import com.flowershop.back.exceptions.object.Error;
-import jakarta.mail.AuthenticationFailedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

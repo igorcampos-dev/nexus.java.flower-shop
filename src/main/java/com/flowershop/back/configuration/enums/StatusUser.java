@@ -5,7 +5,7 @@ public enum StatusUser {
     A("A"),
     P("P");
 
-    private String status;
+    String status;
 
     StatusUser(String status){
         this.status = status;

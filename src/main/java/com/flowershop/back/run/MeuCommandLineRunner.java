@@ -4,7 +4,6 @@ import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.repositories.UserRepository;
-import com.flowershop.back.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
