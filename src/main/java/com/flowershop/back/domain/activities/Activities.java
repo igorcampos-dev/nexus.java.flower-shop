@@ -4,6 +4,7 @@ import com.flowershop.back.configuration.annotations.isValid;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 @Entity(name = "activities")

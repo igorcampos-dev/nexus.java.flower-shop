@@ -39,11 +39,20 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.DELETE, "/flower-shop/delete").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/flower-shop/update-flower/{id}/{fileName}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/flower-shop/register-flower/{filename}").hasRole("ADMIN")
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+    public final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

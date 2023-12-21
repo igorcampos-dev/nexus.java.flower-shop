@@ -10,6 +10,10 @@ import com.flowershop.back.services.EmailService;
 import com.flowershop.back.services.ReadersService;
 import com.flowershop.back.services.TokenService;
 import com.flowershop.back.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticação do usuário", description = "(Rotas para o usuário fazer autenticação de login, registro, etc)")
 public class AuthenticationController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -38,8 +43,9 @@ public class AuthenticationController {
     @Autowired
     ReadersService readersService;
 
+    @Operation(summary = "efetua o login")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity<LoginResponseDTO> login(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Informações para login") @RequestBody @Valid AuthenticationDTO data){
         String hash = this.userService.validateUser(data);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -49,9 +55,11 @@ public class AuthenticationController {
 
     }
 
+
+    @Operation(summary = "faz o seu registro na base de dados")
     @PostMapping("/register")
-    public ResponseEntity<ReturnResponseBody> register(@RequestBody @Valid AuthenticationDTO data){
-        String hash = UtilsProject.randomHash(48);
+    public ResponseEntity<ReturnResponseBody> register(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Informaçoẽs para registro") @RequestBody @Valid AuthenticationDTO data){
+        String hash = UtilsProject.randomHash(50);
         String pass = new BCryptPasswordEncoder().encode(data.password());
         User user = this.userService.createUser(data, hash, pass);
         this.userService.save(user);
@@ -60,8 +68,11 @@ public class AuthenticationController {
     }
 
 
+    @Operation(summary = "envia um email com a nova senha")
+    @SecurityRequirement(name = "BearerAuth")
     @PostMapping("/alter-password/{email}/{hash}")
-    public ResponseEntity<ReturnResponseBody> alterPass(@PathVariable("email") @Email @isValid String email, @PathVariable("hash") @isValid String hash){
+    public ResponseEntity<ReturnResponseBody> alterPass( @Schema(example = "exemploUsuario@example.com", description = "email do usuário") @PathVariable("email") @Email @isValid String email,
+                                                        @Schema(example = "HvxZtx6R6JPntroYQ1dgo4281hgwB3p7zoM1yzX3mfyWHdVK3G", description = "Hash do usuário") @PathVariable("hash") @isValid String hash){
         this.emailService.sendEmailResetPass(email, hash);
         return ResponseEntity.status(HttpStatus.OK).body(new ReturnResponseBody("Enviamos um email para sua conta, indicando o passo a passo para fazer a troca de senha."));
 

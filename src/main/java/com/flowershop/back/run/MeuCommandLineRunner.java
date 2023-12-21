@@ -3,7 +3,6 @@ package com.flowershop.back.run;
 import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.User;
-import com.flowershop.back.exceptions.UserAlreadyExistsException;
 import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import static com.flowershop.back.configuration.UtilsProject.randomHash;
+
 @Component
 public class MeuCommandLineRunner implements CommandLineRunner {
 
     @Autowired
-    private UserServiceImpl usuarioService;
+    private UserRepository usuarioService;
 
     @Autowired
     private UserRepository userRepository;
@@ -37,18 +38,17 @@ public class MeuCommandLineRunner implements CommandLineRunner {
         userRepository.findByLogin(login)
                 .ifPresentOrElse(
                         user -> {
-                            System.out.println("Já existe no banco de dados");
                         },
                         () -> {
                             User novoUsuario = new User();
                             novoUsuario.setRole(role);
                             novoUsuario.setStatus(StatusUser.A);
                             novoUsuario.setLogin(login);
-                            novoUsuario.setHash("hash" + role.name()); // Substitua pelo hash desejado
+                            novoUsuario.setHash(randomHash(50));
                             novoUsuario.setPassword(passwordEncoder.encode(senha));
 
                             usuarioService.save(novoUsuario);
-                            System.out.println("Usuário " + login + " foi criado e salvo no banco de dados, sua senha é" + senha + ".");
+                            System.out.println("Usuário: " + login + " foi criado e salvo no banco de dados, sua senha é: " + senha + ".");
                             System.out.println("Imprimo isto, pois há rotas ao qual apenas adm pode acessar, o crud das flores");
                         }
                 );

@@ -3,6 +3,7 @@ package com.flowershop.back.controllers;
 import com.flowershop.back.configuration.enums.Messages;
 import com.flowershop.back.services.ReadersService;
 import com.flowershop.back.services.UserService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ public class ValidateEmail {
     @Autowired
     ReadersService readersService;
 
+    @Hidden
     @SneakyThrows
     @GetMapping("/confirme-email")
     public ResponseEntity<String> confirmeEmail(@RequestParam(name = "hash", required = false, defaultValue = "null") String hash) {

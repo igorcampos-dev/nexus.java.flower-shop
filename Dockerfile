@@ -1,4 +1,3 @@
-# Use a imagem OpenJDK 17 com Alpine Linux
 FROM openjdk:17-alpine
 
 ARG JAR_FILE=target/*.jar

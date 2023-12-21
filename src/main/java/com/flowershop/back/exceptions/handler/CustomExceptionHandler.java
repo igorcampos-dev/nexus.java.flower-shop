@@ -2,6 +2,7 @@ package com.flowershop.back.exceptions.handler;
 
 import com.flowershop.back.exceptions.*;
 import com.flowershop.back.exceptions.object.Error;
+import jakarta.mail.AuthenticationFailedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
@@ -183,4 +185,6 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
+
+
 }

@@ -21,10 +21,14 @@ Para executar este projeto, você precisa ter instalado:
 - JDK 17
 - Uma versão compatível do Maven
 - Para o banco de dados, você deve saber o seu ip, para usar ele no application.properties como variavel de conexao do banco de dados
-- Você pode usar abrir o postman e importar todas as rotas disponiveis na pasta /endpoints-postman/Api-flowershop.postman_collection.json
-- <p><strong>Configure as variáveis de ambiente</strong>:</p>
+- Você pode usar abrir o postman e importar todas as rotas disponiveis no arquivo /endpoints-postman/Api-flowershop.postman_collection.json
+- <p><strong>Configure as variáveis de ambiente no aplication.properties</strong>:</p>
   <p><code>api.java.mail.email</code> e <code>api.java.mail.password</code> são necessárias para o projeto.</p>
   <p>Assista ao <a href="https://www.youtube.com/watch?v=bK5j-GDhq8M&feature=youtu.be">vídeo de configuração</a>.</p>
+
+## 🚪 Portas
+
+ ### Porta Padrão : localhost:8085.
 
 
 ## 🛠️ Tecnologias
@@ -38,6 +42,26 @@ Para executar este projeto, você precisa ter instalado:
 - **JavaMail:** Envio de emails eficiente.
 - **Lombok:** Biblioteca para redução de boilerplate.
 - **Hibernate Validator:** Framework para validação de dados.
+
+## Usando o Swagger
+
+**Acesse o Swagger em: [http://localhost:8085/swagger-ui/index.html#](http://localhost:8085/swagger-ui/index.html#)**
+
+**Preste bastante atenção aqui!** Para acessar as rotas autenticadas, siga os passos abaixo:
+
+1. 📝 Registre uma conta na rota de registro, fornecendo dados reais.
+2. 🔄 Observe cuidadosamente a resposta HTTP recebida após o registro.
+3. 🔐 Efetue o login usando as credenciais recém-criadas.
+4. 🎫 Após o login bem-sucedido, obtenha o token JWT.
+5. **🔒 No Swagger, clique no ícone "Authorize".**
+6. **🚀 Insira e autorize o seu token JWT correto.**
+
+**ATENÇÃO!** As rotas do CRUD de flores requerem um usuário que tenha a role de admin. Certifique-se de verificar o log do Spring Boot após o login, pois no final será gerado um usuário admin para testar essas rotas, faça o login com ele e autentique o jwt token.
+
+## Observação
+
+**Atenção:** A rota `localhost:8085/flower-shop/register-flower/{filename}` está desativada no momento. Isso ocorre porque atualmente é necessário enviar um corpo (body) contendo uma imagem para esta rota. Estou trabalhando na correção deste problema e em breve ela estará disponível novamente. Agradeço pela compreensão.
+
 
 ## Endpoints
 
@@ -136,33 +160,7 @@ Para executar este projeto, você precisa ter instalado:
 
 Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:
 
-### 📦 Passo 1: Crie um novo JAR do projeto
-Antes de começar, configure as variáveis de ambiente explicadas no início do README. No diretório raiz do projeto, execute o seguinte comando para criar um novo JAR. Certifique-se de pular os testes durante o processo:
-<code>
-mvn clean install -DskipTests
-</code>
-
-### 🐋 Passo 2: Atualize a base de dados
-Atualize o arquivo `application.properties` com o link correto da base de dados, conforme comentado abaixo.
-
-### ▶️ Passo 3: Inicie o contêiner Docker do MySQL
-Inicie o contêiner Docker do MySQL usando o arquivo docker-compose do projeto. Execute o seguinte comando para criar o contêiner Docker com o projeto:
-<code>
-docker compose up
-</code>
-Após ele rodar e se estabilizar, prossiga para o próximo passo.
-
-### Passo 4: Crie a imagem Docker do projeto Java
-Após a geração do JAR, verifique se o arquivo Dockerfile está presente no projeto. Se estiver presente, execute o seguinte comando para criar a imagem Docker. Substitua `{nome do projeto}` pelo nome desejado para a imagem:
-<code>
-docker build -t {nome do projeto} .
-</code>
-Por exemplo:
-<code>
-docker build -t java-api .
-</code>
-Após isso, execute o seguinte comando:
-<code>
-docker run -p 8085:8080 {nome da sua imagem}
-</code>
-
+### 📦 Execute o Script de Deploy
+No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto em um contêiner Docker. Este script compilará o projeto, iniciará o contêiner Docker do MySQL e executará o projeto Java no contêiner:
+```bash
+./deploy.sh
