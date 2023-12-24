@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.List;
 
 @RestController
 @RequestMapping("/flower-shop")
@@ -28,7 +27,7 @@ public class FlowerController {
 
     @Operation(summary = "Salvar flores")
     @SneakyThrows
-    @PostMapping("/register-flower/{fileName}")
+    @PostMapping(value = "/register-flower/{fileName}", consumes =  "multipart/form-data")
     public ResponseEntity<ReturnResponseBody> postProduct(@Schema(example = "Tulipa", description = "nome da flor") @Valid @PathVariable String fileName,
                                                           @RequestParam("file") MultipartFile file){
         this.flowerService.save(fileName, file);
@@ -37,7 +36,7 @@ public class FlowerController {
     }
 
     @Operation(summary = "Atualizar informações de uma flor")
-    @PutMapping("/update-flower/{id}/{fileName}")
+    @PutMapping(value = "/update-flower/{id}/{fileName}", consumes =  "multipart/form-data")
     public ResponseEntity<ReturnResponseBody> updateFlower(@Schema(example = "1320ec46-8dc4-4874-a191-8f195703376c", description = "id da flor") @Valid @PathVariable String id,
                                                            @RequestParam("file") MultipartFile file,
                                                            @Schema(example = "Tuplica%20Azul", description = "nome da flor")@Valid @PathVariable String fileName) {
@@ -47,9 +46,9 @@ public class FlowerController {
 
     @Operation(summary = "Pegar informação de uma flor com o nome")
     @GetMapping("/see-flowers/{fileName}")
-    public ResponseEntity<List<FlowerGetDatabase>> getFlower(@Schema(example = "Tulipa", description = "nome da flor")@Valid @PathVariable String fileName){
-        List<FlowerGetDatabase> productList = this.flowerService.findByName(fileName);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    public ResponseEntity<FlowerGetDatabase> getFlower(@Schema(example = "Tulipa", description = "nome da flor")@Valid @PathVariable String fileName){
+        FlowerGetDatabase flower = this.flowerService.findByName(fileName);
+        return ResponseEntity.status(HttpStatus.OK).body(flower);
     }
 
     @Operation(summary = "Deletar flor com o id")

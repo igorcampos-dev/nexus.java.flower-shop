@@ -58,11 +58,6 @@ Para executar este projeto, você precisa ter instalado:
 
 **ATENÇÃO!** As rotas do CRUD de flores requerem um usuário que tenha a role de admin. Certifique-se de verificar o log do Spring Boot após o login, pois no final será gerado um usuário admin para testar essas rotas, faça o login com ele e autentique o jwt token.
 
-## Observação
-
-**Atenção:** A rota `localhost:8085/flower-shop/register-flower/{filename}` está desativada no momento. Isso ocorre porque atualmente é necessário enviar um corpo (body) contendo uma imagem para esta rota. Estou trabalhando na correção deste problema e em breve ela estará disponível novamente. Agradeço pela compreensão.
-
-
 ## Endpoints
 
 ### 1. Registro de Usuário

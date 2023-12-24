@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "localhost:8080/auth/register",
+			"name": "localhost:8085/auth/register",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -25,11 +25,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/auth/login",
+					"raw": "localhost:8085/auth/login",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"auth",
 						"login"
@@ -39,7 +39,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/auth/login",
+			"name": "localhost:8085/auth/login",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -56,11 +56,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/auth/login",
+					"raw": "localhost:8085/auth/login",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"auth",
 						"login"
@@ -70,7 +70,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/auth/alter-password/{email}/{hash}",
+			"name": "localhost:8085/auth/alter-password/{email}/{hash}",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -85,11 +85,11 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/auth/alter-password/{email}/{hash}",
+					"raw": "localhost:8085/auth/alter-password/{email}/{hash}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"auth",
 						"alter-password",
@@ -101,7 +101,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/register-flower/{filename}",
+			"name": "localhost:8085/flower-shop/register-flower/{filename}",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -133,11 +133,11 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/flower-shop/register-flower/{filename}",
+					"raw": "localhost:8085/flower-shop/register-flower/{filename}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"register-flower",
@@ -148,7 +148,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/see-flowers/{filename}",
+			"name": "localhost:8085/flower-shop/see-flowers/{filename}",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -163,11 +163,11 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/flower-shop/delete/{id}",
+					"raw": "localhost:8085/flower-shop/delete/{id}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"delete",
@@ -178,7 +178,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/see-flowers/{filename}",
+			"name": "localhost:8085/flower-shop/see-flowers/{filename}",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -193,11 +193,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/flower-shop/activities?hash={hash}",
+					"raw": "localhost:8085/flower-shop/activities?hash={hash}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"activities"
@@ -213,16 +213,16 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/update-flower/{id}/{newFilename}",
+			"name": "localhost:8085/flower-shop/update-flower/{id}/{newFilename}",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/flower-shop/update-flower/{id}/{newFilename}",
+					"raw": "localhost:8085/flower-shop/update-flower/{id}/{newFilename}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"update-flower",
@@ -234,7 +234,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/send-message",
+			"name": "localhost:8085/flower-shop/send-message",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -258,11 +258,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/flower-shop/send-message",
+					"raw": "localhost:8085/flower-shop/send-message",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"send-message"
@@ -272,7 +272,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/see-flowers/{filename}",
+			"name": "localhost:8085/flower-shop/see-flowers/{filename}",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -287,11 +287,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/flower-shop/see-flowers/{filename}",
+					"raw": "localhost:8085/flower-shop/see-flowers/{filename}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"see-flowers",
@@ -302,7 +302,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:8080/flower-shop/activities/{idUser}",
+			"name": "localhost:8085/flower-shop/activities/{idUser}",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -317,11 +317,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/flower-shop/activities/{idUser}",
+					"raw": "localhost:8085/flower-shop/activities/{idUser}",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8085",
 					"path": [
 						"flower-shop",
 						"activities",

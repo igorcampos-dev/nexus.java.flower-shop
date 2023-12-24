@@ -47,8 +47,11 @@ public class MeuCommandLineRunner implements CommandLineRunner {
                             novoUsuario.setPassword(passwordEncoder.encode(senha));
 
                             usuarioService.save(novoUsuario);
+                            System.out.println("------------------------------------------------------------------------------------------");
                             System.out.println("Usuário: " + login + " foi criado e salvo no banco de dados, sua senha é: " + senha + ".");
-                            System.out.println("Imprimo isto, pois há rotas ao qual apenas adm pode acessar, o crud das flores");
+                            System.out.println("Imprimo isto, pois há rotas ao qual apenas adm pode acessar, o CRUD das flores");
+                            System.out.println("-------------------------------------------------------------------------------------------");
+
                         }
                 );
     }
