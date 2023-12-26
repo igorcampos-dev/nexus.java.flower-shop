@@ -1,6 +1,7 @@
 package com.flowershop.back.domain.flower;
 
-import com.flowershop.back.configuration.annotations.isValid;
+import com.flowershop.back.configuration.annotations.IsValid;
+import com.flowershop.back.configuration.annotations.ValidBase64;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,15 +22,16 @@ public class Flowers {
     private String id;
 
     @Lob
+    @ValidBase64
     @Column(columnDefinition = "LONGBLOB", unique = true)
-    private byte[] file;
+    private String file;
 
-    @isValid
+    @IsValid
     @Column(unique = true)
     private String filename;
 
-    public Flowers(FlowerGetDatabase data){
-        this.filename = data.fileName();
-        this.file = data.file();
+    public Flowers(FlowerGetDatabase flowerGet){
+        this.filename = flowerGet.filename();
+        this.file = flowerGet.file();
     }
 }

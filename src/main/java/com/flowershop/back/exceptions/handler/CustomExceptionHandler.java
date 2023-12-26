@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
@@ -133,7 +132,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<Error> methodArgumentNotValidException(HttpServletRequest s){
         Error error = Error.builder()
                 .timestamp(instant)
-                .message("dados passados são invalidos")
+                .message("dado passado é inválido")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .path(s.getRequestURI())
                 .build();
@@ -173,7 +172,6 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(TokenExpiredException.class)
-    @ResponseBody
     public ResponseEntity<Error> handleTokenVerificationException(HttpServletRequest s) {
         Error error = Error.builder()
                 .timestamp(instant)

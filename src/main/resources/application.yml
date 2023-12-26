@@ -4,7 +4,7 @@ spring:
   profiles:
     active: test
   datasource:
-    url: jdbc:mysql://{seu ip aqui}:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://{seu ip}:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 3570951
     driver-class-name: com.mysql.cj.jdbc.Driver

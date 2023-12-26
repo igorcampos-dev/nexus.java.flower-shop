@@ -33,6 +33,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/confirme-email").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/confirme-email").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/reset-password/{hash}/{pass}/{key}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/flower-shop/see-flowers/{fileName}").hasRole("ADMIN")

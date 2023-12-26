@@ -1,10 +1,10 @@
 version: '3'
 services:
   mysql-db:
+    container_name: flower-shop-mysql
     image: mysql:latest
     ports:
       - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 3570951
       MYSQL_DATABASE: floricultura
-

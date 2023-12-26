@@ -1,6 +1,6 @@
 package com.flowershop.back.domain.activities;
 
-import com.flowershop.back.configuration.annotations.isValid;
+import com.flowershop.back.configuration.annotations.IsValid;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,9 +20,9 @@ public class Activities {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @isValid
+    @IsValid
     private String user;
-    @isValid
+    @IsValid
     private String remittent;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

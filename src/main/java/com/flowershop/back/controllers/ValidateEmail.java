@@ -5,7 +5,6 @@ import com.flowershop.back.services.ReadersService;
 import com.flowershop.back.services.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,11 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class ValidateEmail {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+    private final ReadersService readersService;
 
-    @Autowired
-    ReadersService readersService;
+    public ValidateEmail(UserService userService, ReadersService readersService) {
+        this.userService = userService;
+        this.readersService = readersService;
+    }
 
     @Hidden
     @SneakyThrows

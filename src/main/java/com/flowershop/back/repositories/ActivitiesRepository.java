@@ -10,6 +10,4 @@ import java.util.Optional;
 @Repository
 public interface ActivitiesRepository extends JpaRepository<Activities, String> {
     Optional<List<Activities>> findByUser(String user);
-
-
 }

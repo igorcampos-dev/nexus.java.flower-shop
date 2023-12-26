@@ -4,11 +4,9 @@ import com.flowershop.back.domain.activities.Activities;
 import com.flowershop.back.domain.activities.ActivitiesResponseDTO;
 import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.domain.user.User;
-import com.flowershop.back.exceptions.UserNotFoundException;
-import com.flowershop.back.repositories.ActivitiesRepository;
-import com.flowershop.back.repositories.UserRepository;
 import com.flowershop.back.services.ActivitiesService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.flowershop.back.services.repo.ActivitiesMethodsDbs;
+import com.flowershop.back.services.repo.UserMethodsDbs;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,17 +15,17 @@ import java.util.List;
 @Service
 public class ActivitiesServiceImpl implements ActivitiesService {
 
-    @Autowired
-    ActivitiesRepository activitiesRepository;
+    private final ActivitiesMethodsDbs activitiesMethodsDbs;
+    private final UserMethodsDbs userMethodsDbs;
 
-    @Autowired
-    UserRepository userRepository;
-
+    public ActivitiesServiceImpl(ActivitiesMethodsDbs activitiesMethodsDbs, UserMethodsDbs userMethodsDbs) {
+        this.activitiesMethodsDbs = activitiesMethodsDbs;
+        this.userMethodsDbs = userMethodsDbs;
+    }
 
     @Override
     public void save(MessageDTO message) {
-        User user = userRepository.findByHash(message.hash())
-                .orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ao salvar a sua atividade"));
+        User user = userMethodsDbs.findByHash(message.hash());
 
         Activities activities = Activities.builder()
                 .user(user.getLogin())
@@ -35,13 +33,12 @@ public class ActivitiesServiceImpl implements ActivitiesService {
                 .datetime(LocalDateTime.now())
                 .build();
 
-        activitiesRepository.save(activities);
+        activitiesMethodsDbs.save(activities);
     }
-
 
     @Override
     public List<ActivitiesResponseDTO> findAllById(String id) {
-       User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário não existe"));
-      return  this.activitiesRepository.findByUser(user.getLogin()).stream().map(ActivitiesResponseDTO::new).toList();
+       User user = userMethodsDbs.findById(id);
+      return this.activitiesMethodsDbs.findByUser(id, user);
     }
 }

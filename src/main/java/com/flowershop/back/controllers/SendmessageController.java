@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Enviar mensagem", description = "Rota relacionada a enviar mensagems para um ente querido")
 public class SendmessageController {
 
-    @Autowired
-    EmailServiceImpl emailService;
+    private final EmailServiceImpl emailService;
+    private final ActivitiesService activitiesService;
 
-    @Autowired
-    ActivitiesService activitiesService;
+    public SendmessageController(EmailServiceImpl emailService, ActivitiesService activitiesService) {
+        this.emailService = emailService;
+        this.activitiesService = activitiesService;
+    }
 
     @Operation(summary = "envia uma flor para um usuário")
     @PostMapping("/send-message")

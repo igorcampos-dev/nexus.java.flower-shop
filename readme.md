@@ -1,4 +1,6 @@
 <div align="center">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-T4/uDyXN8KOgoN4p3ZUZl3zrm+FjI5mZ0enAeWI+Re6qk05hAA1a1TpVOL6KBo+aq/47viKiaefWi0U3Ol9FwDQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 # API Flower Shop
 
@@ -35,13 +37,15 @@ Para executar este projeto, você precisa ter instalado:
 
 ### Backend
 
-- **Java:** Linguagem de programação poderosa.
-- **Spring Boot:** Framework para desenvolvimento ágil.
-- **Spring Security:** Autenticação e segurança de classe empresarial.
-- **MySQL:** Banco de dados confiável.
-- **JavaMail:** Envio de emails eficiente.
-- **Lombok:** Biblioteca para redução de boilerplate.
-- **Hibernate Validator:** Framework para validação de dados.
+- **Java:** <i class="fab fa-java"></i> Linguagem de programação poderosa.
+- **Spring Boot:** <i class="fa-solid fa-bolt"></i> Framework para desenvolvimento ágil.
+- **Spring Security:** <i class="fas fa-shield-alt"></i> Autenticação e segurança de classe empresarial.
+- **MySQL:** <i class="fas fa-database"></i> Banco de dados confiável.
+- **JavaMail:** <i class="fas fa-envelope"></i> Envio de emails eficiente.
+- **Lombok:** <i class="fas fa-magic"></i> Biblioteca para redução de boilerplate.
+- **Hibernate Validator:** <i class="fas fa-check-circle"></i> Framework para validação de dados.
+- **Swagger OpenAPI:** <i class="fas fa-book"></i> Biblioteca de documentação.
+
 
 ## Usando o Swagger
 
@@ -57,6 +61,31 @@ Para executar este projeto, você precisa ter instalado:
 6. **🚀 Insira e autorize o seu token JWT correto.**
 
 **ATENÇÃO!** As rotas do CRUD de flores requerem um usuário que tenha a role de admin. Certifique-se de verificar o log do Spring Boot após o login, pois no final será gerado um usuário admin para testar essas rotas, faça o login com ele e autentique o jwt token.
+
+## 🐳 Executando o Projeto no Docker
+
+Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:
+
+### 📦 Execute o Script de Deploy
+No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto em um contêiner Docker. Este script compilará o projeto, iniciará o contêiner Docker do MySQL e executará o projeto Java no contêiner:
+```bash
+./deploy-docker.sh
+```
+
+## 🚀 Executando o Projeto Localmente
+
+Para executar este projeto localmente, siga estas etapas:
+
+### 📦 Execute o Script de Deploy Local
+
+No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto localmente:
+
+```bash
+./deploy-local.sh
+```
+
+
+
 
 ## Endpoints
 
@@ -149,13 +178,3 @@ Para executar este projeto, você precisa ter instalado:
   "flower": "margarida",
   "hash": "dA58Cw0n8EwJdBlKtL3eSiv2ksFbg9drWx9xkuyB3AcMR3Pt"
   }
-
-
-## 🐳 Executando o Projeto no Docker
-
-Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:
-
-### 📦 Execute o Script de Deploy
-No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto em um contêiner Docker. Este script compilará o projeto, iniciará o contêiner Docker do MySQL e executará o projeto Java no contêiner:
-```bash
-./deploy.sh

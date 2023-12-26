@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface FlowerRepository extends JpaRepository<Flowers, String> {
    Optional<Flowers> findByFilename(String fileName);
 
-   Optional<Flowers> findByFile(byte[] file);
+   Optional<Flowers> findByFile(String file);
 }

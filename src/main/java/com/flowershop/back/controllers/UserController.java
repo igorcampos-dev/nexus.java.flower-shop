@@ -6,14 +6,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -21,8 +19,11 @@ import java.util.List;
 @SecurityRequirement(name = "BearerAuth")
 @Tag(name = "Ver atividades", description = "Relacionada a atividades do usuário no processo de envio de emails")
 public class UserController {
-    @Autowired
-    ActivitiesService activitiesService;
+
+    private final ActivitiesService activitiesService;
+    public UserController(ActivitiesService activitiesService) {
+        this.activitiesService = activitiesService;
+    }
 
     @Operation(summary = "Ver atividades de um usuário com o seu id")
     @GetMapping("/activities/{id}")

@@ -1,6 +1,6 @@
 package com.flowershop.back.domain.user;
 
-import com.flowershop.back.configuration.annotations.isValid;
+import com.flowershop.back.configuration.annotations.IsValid;
 import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import jakarta.persistence.*;
@@ -34,16 +34,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @isValid
+    @IsValid
     @Email
     @Column(unique = true)
     private String login;
 
-    @isValid
+    @IsValid
     @Column(unique = true)
     private String hash;
 
-    @isValid
+    @IsValid
     private String password;
 
 
