@@ -119,8 +119,9 @@ No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto
 - **Método:** POST
 - **Autenticação:** Bearer Token
 - **Corpo da Requisição (PathVariable):**
-  ```json
+  ```text
   localhost:8085/auth/alter-password/igorccampos9@gmail.com/dA58Cw0n8EwJdBlKtL3eSiv2ksFbg9drWx9xkuyB3AcMR3Pt
+  ```
 
 ### 4. Registro de Flor
 
