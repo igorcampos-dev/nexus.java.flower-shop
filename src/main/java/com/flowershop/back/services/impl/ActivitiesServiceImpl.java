@@ -8,7 +8,6 @@ import com.flowershop.back.services.ActivitiesService;
 import com.flowershop.back.services.repo.ActivitiesMethodsDbs;
 import com.flowershop.back.services.repo.UserMethodsDbs;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

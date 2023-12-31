@@ -9,9 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Base64;
-
 import static com.flowershop.back.configuration.UtilsProject.replaceFilename;
 
 @Service
@@ -52,7 +50,7 @@ public class FlowerServiceImpl implements FlowerService {
     @Override
     @Transactional
     public void deleteById(String id) {
-        Flowers flower = flowerMethodsDbs.findById(id);
+        Flowers flower = flowerMethodsDbs.findByIdAndDeleteRedis(id);
         flowerMethodsDbs.deleteById(flower.getId());
     }
 

@@ -1,6 +1,5 @@
 package com.flowershop.back.controllers;
 
-import com.flowershop.back.configuration.enums.Messages;
 import com.flowershop.back.services.ReadersService;
 import com.flowershop.back.services.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -33,7 +32,7 @@ public class ValidateEmail {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_HTML);
         userService.updateStatus(hash);
-        return new ResponseEntity<>(readersService.fileHtmlConfirmacao(Messages.EMAILSUCESSO.getValue()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(readersService.fileHtml("EmailSucesso"), headers, HttpStatus.OK);
     }
 
 

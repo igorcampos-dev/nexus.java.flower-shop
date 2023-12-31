@@ -1,6 +1,5 @@
 package com.flowershop.back.services.impl.email;
 
-import com.flowershop.back.configuration.enums.Messages;
 import com.flowershop.back.domain.ReturnResponseBody;
 import com.flowershop.back.domain.flower.MessageDTO;
 import com.flowershop.back.domain.flower.ResponseFlowerGet;
@@ -28,6 +27,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Properties;
 import static com.flowershop.back.configuration.UtilsProject.randomHash;
+import static com.flowershop.back.configuration.UtilsProject.replaceFilename;
 
 
 @Service
@@ -52,24 +52,22 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendEmailVerification(String email, String hash) {
         String url = link + "/confirme-email?hash=" + hash;
-        String assunto = readersService.usePhrases(Messages.ASSUNTOCONFIRMACAO.getValue());
-        String mensagem = String.format(readersService.usePhrases(Messages.MENSAGEMCONFIRMACAO.getValue()), url);
-        send(email, assunto, mensagem, null, null);
+        String mensagem = String.format(readersService.fileHtml("Confirmacao"), url);
+        send(email, "Confirmação de cadastro", mensagem, null, null);
     }
 
     @SneakyThrows
     @Override
     public void sendEmailUser(MessageDTO message) {
         userMethodsDbs.userExistsByHash(message.hash());
-        ResponseFlowerGet flower = flowerMethodsDbs.findByFilename(message.flower().replace("%20", " "));
+        ResponseFlowerGet flower = flowerMethodsDbs.findByFilename(replaceFilename(message.flower()));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(flower.file()))), "jpg", baos);
         Resource imageResource = new ByteArrayResource(baos.toByteArray());
-        String assunto = readersService.usePhrases(Messages.ASSUNTO.getValue());
-        String mensagemFinal = String.format(readersService.usePhrases(Messages.MENSAGEM.getValue()), flower.fileName(), message.mensagem());
+        String mensagemFinal = String.format(readersService.fileHtml("EnvioFlor"), flower.fileName(), message.mensagem());
 
-        send(message.email(), assunto, mensagemFinal, flower.fileName().concat(".jpg"), imageResource);
+        send(message.email(), "Uma flor linda para uma pessoa linda \uD83D\uDE0A", mensagemFinal, flower.fileName().concat(".jpg"), imageResource);
     }
 
     @Override
@@ -95,9 +93,8 @@ public class EmailServiceImpl implements EmailService {
         user.setPassword(new BCryptPasswordEncoder().encode(newPass));
         userMethodsDbs.save(user);
 
-        String assunto = readersService.usePhrases(Messages.ASSUNTORESETPASS.getValue());
-        String mensagemFinal = String.format(readersService.usePhrases(Messages.MENSAGEMRESETSENHA.getValue()), newPass);
-        send(email, assunto, mensagemFinal, null, null);
+        String mensagemFinal = String.format(readersService.fileHtml("RecuperarSenha"), newPass);
+        send(email,"Recuperação de senha", mensagemFinal, null, null);
     }
 
     @Override

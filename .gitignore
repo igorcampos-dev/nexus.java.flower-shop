@@ -37,3 +37,6 @@ build/
 
 ### Java ###
 target
+
+### Credentials git ###
+token-git.txt

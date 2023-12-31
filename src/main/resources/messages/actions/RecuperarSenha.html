@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperação de Senha</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+        body {
+            font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+        }
+        h1 {
+            color: #333333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            font-family: 'Montserrat', sans-serif;
+        }
+        p {
+            color: #555555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: justify;
+            font-family: 'Roboto', sans-serif;
+        }
+        .confirmation-link {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: #ffffff;
+            border-radius: 5px;
+            border: 2px solid #4CAF50;
+            transition: background-color .3s ease;
+        }
+        .confirmation-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <h1>Prezado(a),</h1>
+    <p>Esperamos que esteja bem. Você está recebendo este e-mail porque solicitou a recuperação da sua senha.</p>
+    <p>Sua nova senha é: <strong>%s</strong></p>
+    <p>Se você não solicitou a recuperação da senha, pode ignorar este e-mail.</p>
+    <p>Atenciosamente,<br/> <strong>TI Flower-Shop Campos</strong> </p>
+    <p>Observação: Esta mensagem é gerada automaticamente e não requer resposta.</p>
+</div>
+</body>
+</html>

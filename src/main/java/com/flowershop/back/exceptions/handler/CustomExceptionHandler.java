@@ -117,16 +117,7 @@ public class CustomExceptionHandler {
     }
 
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<Error> iOException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Um erro ocorreu na leitura dos arquivos!")
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Error> methodArgumentNotValidException(HttpServletRequest s){
@@ -170,18 +161,4 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-
-    @ExceptionHandler(TokenExpiredException.class)
-    public ResponseEntity<Error> handleTokenVerificationException(HttpServletRequest s) {
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Token inválido")
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .path(s.getRequestURI())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-    }
-
-
 }

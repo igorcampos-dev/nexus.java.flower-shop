@@ -12,4 +12,5 @@ public interface FlowerMethodsDbs {
     void flowerExistsByFile(String bytes);
     void flowerExistsByFileName(String filename);
     Flowers findById(String id);
+    Flowers findByIdAndDeleteRedis(String id);
 }

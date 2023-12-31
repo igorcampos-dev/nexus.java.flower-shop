@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          margin: 0;
+          flex-direction: column;
+        }
+        h1 {
+          font-size: 24px;
+          margin-top: 0;
+        }
+        img {
+          max-width: 100%;
+          max-height: 80vh; /* ajuste conforme necessário */
+          margin-top: 20px;
+        }
+    </style>
+    <title>Flower Image Viewer</title>
+</head>
+<body>
+
+<h1>FLORICULTURA ONLINE</h1>
+
+<script>
+    // Endpoint e token fornecidos
+    const endpoint = 'http://localhost:8085/flower-shop/see-flowers/RosaNova';
+    const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiZXhwIjoxNzAzOTc0ODIzfQ.oqbA09zMVOtA1Dv5Qc3pXa57blQ_VFmDrXQ2DeVooaM';
+
+    // Requisição GET usando fetch
+    fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Accept': '*/*',
+        'Authorization': token
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Extraindo campos id, fileName e file da resposta
+      const { id, fileName, file } = data;
+
+      // Criando uma imagem a partir do base64
+      const image = new Image();
+      image.src = `data:image/png;base64, ${file}`;
+
+      // Adicionando a imagem ao corpo do documento
+      document.body.appendChild(image);
+    })
+    .catch(error => console.error('Erro na requisição:', error));
+</script>
+
+</body>
+</html>

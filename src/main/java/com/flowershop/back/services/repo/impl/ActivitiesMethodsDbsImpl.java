@@ -6,7 +6,6 @@ import com.flowershop.back.domain.user.User;
 import com.flowershop.back.repositories.ActivitiesRepository;
 import com.flowershop.back.services.repo.ActivitiesMethodsDbs;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

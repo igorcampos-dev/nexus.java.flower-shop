@@ -30,4 +30,17 @@ public class ReadersImpl implements ReadersService {
         Matcher matcher = Pattern.compile(String.format("<%s.*?>(.*?)</%s>", tag, tag), Pattern.DOTALL).matcher(conteudo);
         return matcher.find() ? matcher.group(1).trim() : "";
     }
+
+    @Override
+    @SneakyThrows
+    public String fileHtml(String filename) {
+        Path filePath = Paths.get("src/main/resources/messages/actions/" + filename + ".html");
+        byte[] fileBytes = Files.readAllBytes(filePath);
+        String conteudo = new String(fileBytes, StandardCharsets.UTF_8);
+
+        Pattern pattern = Pattern.compile("<html.*?>(.*?)</html>", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(conteudo);
+
+        return matcher.find() ? matcher.group(1).trim() : "";
+    }
 }

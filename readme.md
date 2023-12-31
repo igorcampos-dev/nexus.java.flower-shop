@@ -24,8 +24,8 @@ Para executar este projeto, você precisa ter instalado:
 - Uma versão compatível do Maven
 - Para o banco de dados, você deve saber o seu ip, para usar ele no application.properties como variavel de conexao do banco de dados
 - Você pode usar abrir o postman e importar todas as rotas disponiveis no arquivo /endpoints-postman/Api-flowershop.postman_collection.json
-- <p><strong>Configure as variáveis de ambiente no aplication.properties</strong>:</p>
-  <p><code>api.java.mail.email</code> e <code>api.java.mail.password</code> são necessárias para o projeto.</p>
+- <p><strong>Configure as variáveis de ambiente no aplication.yml, por padrão, o projeto está rodando em ambiente dev, ou seja,configure o application-dev</strong>:</p>
+  <p><code>api.java.mail.email</code> e <code>api.java.mail.password</code> são necessárias para o projeto, incluindo o seu ip para os containers (ou localhost em alguns casos)</p>
   <p>Assista ao <a href="https://www.youtube.com/watch?v=bK5j-GDhq8M&feature=youtu.be">vídeo de configuração</a>.</p>
 
 ## 🚪 Portas
@@ -72,6 +72,8 @@ No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto
 ./deploy-docker.sh
 ```
 
+Ao executar,por padrão, você estará ativando o ambiente dev configurado no dockerfile
+
 ## 🚀 Executando o Projeto Localmente
 
 Para executar este projeto localmente, siga estas etapas:
@@ -83,6 +85,9 @@ No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto
 ```bash
 ./deploy-local.sh
 ```
+
+Ao executar,por padrão, você estará ativando o ambiente dev configurado no comando sh
+
 
 
 

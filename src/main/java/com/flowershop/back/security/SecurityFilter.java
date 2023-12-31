@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.flowershop.back.security.SecurityExceptionMessage.exception;
+
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
@@ -26,18 +28,25 @@ public class SecurityFilter extends OncePerRequestFilter {
     UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(@Nullable @NotBlank HttpServletRequest request, @Nullable @NotBlank HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
-       recoverToken(Objects.requireNonNull(request))
-               .ifPresent( token -> {
-                   var login = tokenServiceImpl.validateToken(token);
-                   userRepository.findByLogin(login)
-                           .ifPresent( user -> {
-                               var authentication = new UsernamePasswordAuthenticationToken( user, null, user.getAuthorities());
-                               SecurityContextHolder.getContext().setAuthentication(authentication);
-                           });
-               });
-        filterChain.doFilter(request, response);
+    protected void doFilterInternal( @Nullable @NotBlank HttpServletRequest request, @Nullable @NotBlank HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            assert request != null;
+            assert response != null;
+            recoverToken(Objects.requireNonNull(request))
+                    .ifPresent(token -> {
+                        var login = tokenServiceImpl.validateToken(token);
+                        userRepository.findByLogin(login)
+                                .ifPresent(user -> {
+                                    var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                                });
+                    });
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+                exception(e, request, response);
+        }
     }
+
     private Optional<String> recoverToken(HttpServletRequest request){
        return Optional.ofNullable(request.getHeader("Authorization"))
                .map( authHeader -> authHeader.replace("Bearer", "").strip());

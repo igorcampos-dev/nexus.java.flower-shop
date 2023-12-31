@@ -8,3 +8,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 3570951
       MYSQL_DATABASE: floricultura
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    ports:
+      - "6379:6379"
+

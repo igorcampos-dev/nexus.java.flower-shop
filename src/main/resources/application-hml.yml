@@ -1,10 +1,11 @@
 server:
-  port: 8085
+  port: 8086
 spring:
-  profiles:
-    active: test
+  redis:
+    host: {seu ip aqui}
+    port: 6379
   datasource:
-    url: jdbc:mysql://{seu ip}:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://{seu ip aqui}:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 3570951
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -19,8 +20,8 @@ api:
     token:
       secret: 9f1e3a222d4c6f8a7d5e6f81d4c6f8a71dab1c2e9d3f7a2e7b1cb1c2ee9d31d4c6f8a71df7a2e3f70c7b4c6f8a7b1c2a9d3f71d42e1de9
   link:
-    address: http://localhost:8085
+    address: http://localhost:8086
   java:
     mail:
-      email: leia o readme!!
-      password: leia o readme!!
+      email: leia o readme !!
+      password: leia o readme !!

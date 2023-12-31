@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Message</title>
+    <style>
+        .email-body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #f2f2f2;
+            padding: 30px;
+            border-radius: 20px; /* Ajuste aqui para tornar mais retangular */
+            box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555555;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: #ffffff;
+            border-radius: 5px;
+            border: 2px solid #4CAF50;
+            transition: background-color .3s ease;
+        }
+
+        .confirmation-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body class="email-body">
+<div class="email-container">
+    <h1>Um usuário que usa nossos serviços mandou uma flor para ti!</h1>
+    <p>A flor se chama %s, uma linda flor, também deixou uma mensagem para você:</p>
+    <br>
+    <p>%s</p>
+    <br>
+    <p>Veja a flor: </p>
+</div>
+</body>
+
+</html>
