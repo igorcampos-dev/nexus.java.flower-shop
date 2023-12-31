@@ -8,10 +8,12 @@ import com.flowershop.back.redis.entity.Flower;
 import com.flowershop.back.redis.repository.FlowerRedisRepository;
 import com.flowershop.back.repositories.FlowerRepository;
 import com.flowershop.back.services.repo.FlowerMethodsDbs;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class FlowerMethodsDbsImpl implements FlowerMethodsDbs {
 
     private final FlowerRepository flowerRepository;
@@ -33,12 +35,14 @@ public class FlowerMethodsDbsImpl implements FlowerMethodsDbs {
         Optional<Flower> flower = flowerRedisRepository.findByFilename(filename);
 
         if (flower.isPresent()){
+            log.info("Informação pega pelo redis");
             return new ResponseFlowerGet(flower.get().getId(), flower.get().getFilename(), flower.get().getFile());
         }
 
         Optional<Flowers> flowerDb = flowerRepository.findByFilename(filename);
 
         if (flowerDb.isPresent()){
+            log.info("Informação pega pelo mysql");
             flowerRedisRepository.save(new Flower(flowerDb.get().getId(), flowerDb.get().getFilename(), flowerDb.get().getFile()));
             return new ResponseFlowerGet(flowerDb.get().getId(), flowerDb.get().getFilename(), flowerDb.get().getFile());
         }

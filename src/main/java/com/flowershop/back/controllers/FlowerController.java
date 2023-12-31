@@ -42,7 +42,7 @@ public class FlowerController {
     public ResponseEntity<ReturnResponseBody> updateFlower(
             @Schema(example = "1320ec46-8dc4-4874-a191-8f195703376c", description = "id da flor") @Valid @PathVariable String id,
             @RequestParam("file") MultipartFile file,
-            @Schema(example = "Tuplica%20Azul", description = "novo nome da flor") @Valid @PathVariable String filename
+            @Schema(example = "Tuplica Azul", description = "novo nome da flor") @Valid @PathVariable String filename
     ) {
         this.flowerService.updateFlower(filename, id, file);
         return ResponseEntity.ok().body(new ReturnResponseBody("Flor modificada!"));

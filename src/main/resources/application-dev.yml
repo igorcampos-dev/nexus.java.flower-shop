@@ -4,6 +4,7 @@ spring:
   redis:
     host: {seu ip aqui}
     port: 6379
+    password: 224654
   datasource:
     url: jdbc:mysql://{seu ip aqui}:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
     username: root

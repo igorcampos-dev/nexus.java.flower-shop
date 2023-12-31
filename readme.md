@@ -135,7 +135,7 @@ Ao executar,por padrão, você estará ativando o ambiente dev configurado no co
 - **Autenticação:** Bearer Token
 - **Parâmetros de URL:**
 - **{filename}:** Nome do arquivo
-- **Corpo da Requisição:** Formulário com um arquivo de imagem
+- **Corpo da Requisição:** Form-data com a coluna chamado "file" com a imagem anexada
 - **Descrição:** Registra uma nova flor na loja.
 
 ### 5. Exclusão de Flor
@@ -167,6 +167,7 @@ Ao executar,por padrão, você estará ativando o ambiente dev configurado no co
 - **Método:** PUT
 - **URL:** `localhost:8085/flower-shop/update-flower/{id}/{newFilename}`
 - **utenticação:** Sem autenticação
+- **Corpo da Requisição:** Form-data com a coluna chamado "file" com a imagem anexada,deve ser a atual ou a nova
 - **Parâmetros de URL:**
 - **{id}:** ID da flor a ser atualizada
 - **{newFilename}:** Novo nome do arquivo
