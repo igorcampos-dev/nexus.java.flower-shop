@@ -6,10 +6,11 @@ import com.flowershop.back.domain.flower.ResponseFlowerGet;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.services.EmailService;
 import com.flowershop.back.services.ReadersService;
-import com.flowershop.back.services.repo.FlowerMethodsDbs;
-import com.flowershop.back.services.repo.UserMethodsDbs;
+import com.flowershop.back.repositories.operations.FlowerDatabaseOperations;
+import com.flowershop.back.repositories.operations.UserDatabaseOperations;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -31,16 +32,11 @@ import static com.flowershop.back.configuration.UtilsProject.replaceFilename;
 
 
 @Service
+@AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private final ReadersService readersService;
-    private final FlowerMethodsDbs flowerMethodsDbs;
-    private final UserMethodsDbs userMethodsDbs;
-
-    public EmailServiceImpl(ReadersService readersService, FlowerMethodsDbs flowerMethodsDbs, UserMethodsDbs userMethodsDbs) {
-        this.readersService = readersService;
-        this.flowerMethodsDbs = flowerMethodsDbs;
-        this.userMethodsDbs = userMethodsDbs;
-    }
+    private final FlowerDatabaseOperations flowerDatabaseOperations;
+    private final UserDatabaseOperations userDatabaseOperations;
 
     @Value("${api.java.mail.email}")
     private String emailAdmin;
@@ -59,8 +55,8 @@ public class EmailServiceImpl implements EmailService {
     @SneakyThrows
     @Override
     public void sendEmailUser(MessageDTO message) {
-        userMethodsDbs.userExistsByHash(message.hash());
-        ResponseFlowerGet flower = flowerMethodsDbs.findByFilename(replaceFilename(message.flower()));
+        userDatabaseOperations.userExistsByHash(message.hash());
+        ResponseFlowerGet flower = flowerDatabaseOperations.findByFilename(replaceFilename(message.flower()));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(flower.file()))), "jpg", baos);
@@ -89,9 +85,9 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailResetPass(String email, String hash) {
         String newPass = randomHash(12);
 
-        User user = userMethodsDbs.findByLoginAndHash(email, hash);
+        User user = userDatabaseOperations.findByLoginAndHash(email, hash);
         user.setPassword(new BCryptPasswordEncoder().encode(newPass));
-        userMethodsDbs.save(user);
+        userDatabaseOperations.save(user);
 
         String mensagemFinal = String.format(readersService.fileHtml("RecuperarSenha"), newPass);
         send(email,"Recuperação de senha", mensagemFinal, null, null);

@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Autenticação do usuário", description = "(Rotas para o usuário fazer autenticação de login, registro, etc)")
@@ -32,13 +34,6 @@ public class AuthenticationController {
     private final TokenService tokenServiceImpl;
     private final EmailService emailService;
     private final UserService userService;
-
-    public AuthenticationController(AuthenticationManager authenticationManager, TokenService tokenServiceImpl, EmailService emailService, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.tokenServiceImpl = tokenServiceImpl;
-        this.emailService = emailService;
-        this.userService = userService;
-    }
 
     @Operation(summary = "efetua o login")
     @PostMapping("/login")

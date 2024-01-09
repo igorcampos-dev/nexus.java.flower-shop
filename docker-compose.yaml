@@ -1,0 +1,20 @@
+version: '3'
+services:
+  mysql-db:
+    container_name: mysql-db
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: xEgmJQ}3]@tgAU%bdb#K18fJAFUQ0KBf9]xEr_TNR}5gAB}ZN8eT]wa,0eUWURD5FAgqPzTiPL:bRCATrY+-rc%6nC)}G4Ejjq~K
+      MYSQL_DATABASE: floricultura
+
+  redis:
+    container_name: redis-db
+    hostname: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass p5Pagrt}FMaL9fkbqLN=u??Ctbs,hac-YAMAgBTm~Wpb%c=}y!9GzywxA*-)1>C}e}w9MXYE1ygtia-TgNt5F4P0FDNhW?WdXc}
+
+

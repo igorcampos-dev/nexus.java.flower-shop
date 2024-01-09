@@ -2,12 +2,13 @@ server:
   port: 8087
 spring:
   redis:
-    host: {seu ip aqui}
+    host: redis-db
     port: 6379
+    password: p5Pagrt}FMaL9fkbqLN=u??Ctbs,hac-YAMAgBTm~Wpb%c=}y!9GzywxA*-)1>C}e}w9MXYE1ygtia-TgNt5F4P0FDNhW?WdXc}
   datasource:
-    url: jdbc:mysql://{seu ip aqui}:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://mysql-db:3307/floricultura?allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: 3570951
+    password: xEgmJQ}3]@tgAU%bdb#K18fJAFUQ0KBf9]xEr_TNR}5gAB}ZN8eT]wa,0eUWURD5FAgqPzTiPL:bRCATrY+-rc%6nC)}G4Ejjq~K
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:

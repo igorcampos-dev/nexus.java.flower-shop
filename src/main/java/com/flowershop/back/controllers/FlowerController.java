@@ -8,12 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/flower-shop")
 @SecurityRequirement(name = "BearerAuth")
@@ -21,10 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class FlowerController {
 
     private final FlowerService flowerService;
-
-    public FlowerController(FlowerService flowerService) {
-        this.flowerService = flowerService;
-    }
 
     @Operation(summary = "Salvar flores")
     @SneakyThrows

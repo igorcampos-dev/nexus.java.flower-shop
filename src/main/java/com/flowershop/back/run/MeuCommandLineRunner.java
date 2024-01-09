@@ -4,23 +4,26 @@ import com.flowershop.back.configuration.enums.Role;
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import static com.flowershop.back.configuration.UtilsProject.randomHash;
 
 @Component
+@AllArgsConstructor
 public class MeuCommandLineRunner implements CommandLineRunner {
 
-    @Autowired
-    private UserRepository usuarioService;
+    private static final Logger logger = LogManager.getLogger(MeuCommandLineRunner.class);
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository usuarioService;
+
+    private final UserRepository userRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         criarUsuarios();
     }
 
@@ -43,9 +46,9 @@ public class MeuCommandLineRunner implements CommandLineRunner {
                             novoUsuario.setPassword(new BCryptPasswordEncoder().encode(senha));
 
                             usuarioService.save(novoUsuario);
-                            System.out.println("------------------------------------------------------------------------------------------");
-                            System.out.println("Usuário: " + login + " foi criado e salvo no banco de dados, sua senha é: " + senha + ".");
-                            System.out.println("-------------------------------------------------------------------------------------------");
+                            logger.info("------------------------------------------------------------------------------------------");
+                            logger.info(String.format("Usuário %s foi criado e salvo no banco de dados, sua senha é: %s .", login, senha));
+                            logger.info("-------------------------------------------------------------------------------------------");
 
                         }
                 );

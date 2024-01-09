@@ -8,12 +8,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/flower-shop")
 @SecurityRequirement(name = "BearerAuth")
@@ -22,11 +24,6 @@ public class SendmessageController {
 
     private final EmailServiceImpl emailService;
     private final ActivitiesService activitiesService;
-
-    public SendmessageController(EmailServiceImpl emailService, ActivitiesService activitiesService) {
-        this.emailService = emailService;
-        this.activitiesService = activitiesService;
-    }
 
     @Operation(summary = "envia uma flor para um usuário")
     @PostMapping("/send-message")

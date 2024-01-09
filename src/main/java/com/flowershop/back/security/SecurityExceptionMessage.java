@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import java.io.IOException;
 import java.time.Instant;
+
 public class SecurityExceptionMessage {
 
     static ObjectMapper exception(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,6 +31,5 @@ public class SecurityExceptionMessage {
     }
 
     @Builder
-    record Error(String timestamp, Integer status, String error, String message, String path) {
-    }
+    record Error(String timestamp, Integer status, String error, String message, String path) {}
 }

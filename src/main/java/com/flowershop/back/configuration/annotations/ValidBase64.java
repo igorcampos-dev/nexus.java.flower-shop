@@ -34,6 +34,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidBase64 {
     String message() default "Imagem inválida";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
 }

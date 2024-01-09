@@ -1,8 +1,8 @@
-package com.flowershop.back.services.repo;
+package com.flowershop.back.repositories.operations;
 
 import com.flowershop.back.domain.user.User;
 
-public interface UserMethodsDbs {
+public interface UserDatabaseOperations {
     User findById(String id);
     User findByHash(String hash);
     void loginExists(String login);

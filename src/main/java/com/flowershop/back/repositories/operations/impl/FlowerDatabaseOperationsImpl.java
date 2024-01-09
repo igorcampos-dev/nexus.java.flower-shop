@@ -1,4 +1,4 @@
-package com.flowershop.back.services.repo.impl;
+package com.flowershop.back.repositories.operations.impl;
 
 import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.domain.flower.ResponseFlowerGet;
@@ -7,22 +7,19 @@ import com.flowershop.back.exceptions.FlowerNotFoundException;
 import com.flowershop.back.redis.entity.Flower;
 import com.flowershop.back.redis.repository.FlowerRedisRepository;
 import com.flowershop.back.repositories.FlowerRepository;
-import com.flowershop.back.services.repo.FlowerMethodsDbs;
+import com.flowershop.back.repositories.operations.FlowerDatabaseOperations;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
 @Log4j2
-public class FlowerMethodsDbsImpl implements FlowerMethodsDbs {
+@AllArgsConstructor
+public class FlowerDatabaseOperationsImpl implements FlowerDatabaseOperations {
 
     private final FlowerRepository flowerRepository;
     private final FlowerRedisRepository flowerRedisRepository;
-
-    public FlowerMethodsDbsImpl(FlowerRepository flowerRepository, FlowerRedisRepository flowerRedisRepository) {
-        this.flowerRepository = flowerRepository;
-        this.flowerRedisRepository = flowerRedisRepository;
-    }
 
     @Override
     public void save(Flowers flower) {

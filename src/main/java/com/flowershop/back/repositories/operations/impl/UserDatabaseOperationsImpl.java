@@ -1,21 +1,19 @@
-package com.flowershop.back.services.repo.impl;
+package com.flowershop.back.repositories.operations.impl;
 
 import com.flowershop.back.configuration.enums.StatusUser;
 import com.flowershop.back.domain.user.User;
 import com.flowershop.back.exceptions.UserAlreadyExistsException;
 import com.flowershop.back.exceptions.UserNotFoundException;
 import com.flowershop.back.repositories.UserRepository;
-import com.flowershop.back.services.repo.UserMethodsDbs;
+import com.flowershop.back.repositories.operations.UserDatabaseOperations;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserMethodsDbsImpl implements UserMethodsDbs {
+@AllArgsConstructor
+public class UserDatabaseOperationsImpl implements UserDatabaseOperations {
 
     private final UserRepository userRepository;
-
-    public UserMethodsDbsImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public void save(User user) {

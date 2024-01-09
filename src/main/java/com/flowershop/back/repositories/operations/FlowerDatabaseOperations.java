@@ -1,9 +1,9 @@
-package com.flowershop.back.services.repo;
+package com.flowershop.back.repositories.operations;
 
 import com.flowershop.back.domain.flower.Flowers;
 import com.flowershop.back.domain.flower.ResponseFlowerGet;
 
-public interface FlowerMethodsDbs {
+public interface FlowerDatabaseOperations {
 
     ResponseFlowerGet findByFilename(String filename);
     void save(Flowers flower);

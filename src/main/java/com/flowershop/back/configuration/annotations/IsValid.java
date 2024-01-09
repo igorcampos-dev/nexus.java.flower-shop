@@ -34,6 +34,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsValid {
     String message() default "A string não é válida";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
 }

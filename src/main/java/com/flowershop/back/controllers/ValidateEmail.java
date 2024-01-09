@@ -3,6 +3,7 @@ package com.flowershop.back.controllers;
 import com.flowershop.back.services.ReadersService;
 import com.flowershop.back.services.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,17 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping
 public class ValidateEmail {
 
     private final UserService userService;
     private final ReadersService readersService;
-
-    public ValidateEmail(UserService userService, ReadersService readersService) {
-        this.userService = userService;
-        this.readersService = readersService;
-    }
 
     @Hidden
     @SneakyThrows
@@ -34,6 +31,5 @@ public class ValidateEmail {
         userService.updateStatus(hash);
         return new ResponseEntity<>(readersService.fileHtml("EmailSucesso"), headers, HttpStatus.OK);
     }
-
 
 }
