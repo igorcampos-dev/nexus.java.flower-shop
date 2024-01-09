@@ -14,7 +14,7 @@
 A API Flower Shop é uma API de floricultura que oferece uma variedade de endpoints para gerenciar usuários e operações relacionadas a flores.
 
 ## Autenticação
-Para acessar os recursos protegidos, incluindo operações CRUD de flores, certifique-se de ter a função **ADMIN**.
+Para acessar os recursos protegidos, incluindo operações CRUD de flores, certifique-se de ter a função(Role) **ADMIN**.
 
 ## Pré-requisitos
 
@@ -22,7 +22,6 @@ Para executar este projeto, você precisa ter instalado:
 
 - JDK 17
 - Uma versão compatível do Maven
-- Para o banco de dados, você deve saber o seu ip, para usar ele no application.properties como variavel de conexao do banco de dados
 - Você pode usar abrir o postman e importar todas as rotas disponiveis no arquivo /endpoints-postman/Api-flowershop.postman_collection.json
 - <p><strong>Configure as variáveis de ambiente no aplication.yml, por padrão, o projeto está rodando em ambiente dev, ou seja,configure o application-dev</strong>:</p>
   <p><code>api.java.mail.email</code> e <code>api.java.mail.password</code> são necessárias para o projeto, incluindo o seu ip para os containers (ou localhost em alguns casos)</p>
@@ -60,7 +59,7 @@ Para executar este projeto, você precisa ter instalado:
 5. **🔒 No Swagger, clique no ícone "Authorize".**
 6. **🚀 Insira e autorize o seu token JWT correto.**
 
-**ATENÇÃO!** As rotas do CRUD de flores requerem um usuário que tenha a role de admin. Certifique-se de verificar o log do Spring Boot após o login, pois no final será gerado um usuário admin para testar essas rotas, faça o login com ele e autentique o jwt token.
+**ATENÇÃO!** As rotas do CRUD de flores requerem um usuário que tenha a role de admin. Certifique-se de verificar o log do Spring Boot após o projeto iniciar, pois no final será gerado um usuário admin para testar essas rotas, faça o login com ele e autentique o jwt token.
 
 ## 🐳 Executando o Projeto no Docker
 
@@ -103,7 +102,7 @@ Ao executar,por padrão, você estará ativando o ambiente dev configurado no co
   ```json
   {
       "login": "igorccampos9@gmail.com",
-      "password": "224654"
+      "password": "222322"
   }
 
 ### 2. Login de Usuário
@@ -115,7 +114,7 @@ Ao executar,por padrão, você estará ativando o ambiente dev configurado no co
   ```json
   {
   "login": "igorccampos9@gmail.com",
-  "password": "224654"
+  "password": "22232"
   }
 
 ### 3. Alteração de Senha
