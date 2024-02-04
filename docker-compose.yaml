@@ -15,6 +15,6 @@ services:
     image: redis
     ports:
       - "6379:6379"
-    command: redis-server --requirepass p5Pagrt}FMaL9fkbqLN=u??Ctbs,hac-YAMAgBTm~Wpb%c=}y!9GzywxA*-)1>C}e}w9MXYE1ygtia-TgNt5F4P0FDNhW?WdXc}
+    command: redis-server --requirepass 224654
 
 

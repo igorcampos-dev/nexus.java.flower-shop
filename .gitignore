@@ -18,6 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
+back.iml
+flower-shop.iml
+
 
 ### NetBeans ###
 /nbproject/private/
@@ -38,5 +41,3 @@ build/
 ### Java ###
 target
 
-### Credentials git ###
-token-git.txt

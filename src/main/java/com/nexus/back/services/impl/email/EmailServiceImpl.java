@@ -1,0 +1,57 @@
+package com.nexus.back.services.impl.email;
+
+import com.nexus.back.domain.dto.flower.MessageDTO;
+import com.nexus.back.domain.dto.flower.ResponseFlowerGet;
+import com.nexus.back.domain.entity.User;
+import com.nexus.back.repositories.operations.FlowerDatabaseOperations;
+import com.nexus.back.repositories.operations.UserDatabaseOperations;
+import com.nexus.back.services.EmailService;
+import com.nexus.mail.SendEmailService;
+import com.nexus.mail.models.EmailProperties;
+import com.nexus.utils.Utils;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+public class EmailServiceImpl implements EmailService {
+
+    private final FlowerDatabaseOperations flowerDatabaseOperations;
+    private final UserDatabaseOperations userDatabaseOperations;
+    private final Utils utils;
+    private final SendEmailService emailService;
+    private final EmailMethodsSupport emailMethodsSupport;
+
+    @SneakyThrows
+    @Override
+    public void sendEmailVerification(String email, String hash) {
+        EmailProperties emailProperties = emailMethodsSupport.getMessageConfirmation(hash, email);
+        emailService.send(emailProperties);
+    }
+
+    @SneakyThrows
+    @Override
+    public void sendEmailUser(MessageDTO message) {
+        userDatabaseOperations.userExistsByHash(message.hash());
+        ResponseFlowerGet flower = flowerDatabaseOperations.findByFilename(utils.replace(message.flower()));
+        Resource image = emailMethodsSupport.createImage(flower);
+        EmailProperties emailProperties = emailMethodsSupport.getMessageFlower(flower, message, image);
+        emailService.send(emailProperties);
+    }
+
+    @SneakyThrows
+    @Override
+    public void sendEmailResetPass(String email, String hash) {
+        String newPass = utils.randomHash(12);
+        User user = userDatabaseOperations.findByLoginAndHash(email, hash);
+        user.setPassword(new BCryptPasswordEncoder().encode(newPass));
+        userDatabaseOperations.save(user);
+
+        EmailProperties emailProperties = emailMethodsSupport.getMessageRecoveryPass(newPass, email);
+        emailService.send(emailProperties);
+    }
+
+}
