@@ -1,9 +1,9 @@
 package com.nexus.back.security;
 
 import com.nexus.security.model.dto.RoutesDTO;
-import com.nexus.security.service.FilterService;
-import com.nexus.security.service.RoutesService;
-import com.nexus.security.service.SecurityContextInjector;
+import com.nexus.security.service.filter.FilterService;
+import com.nexus.security.service.filter.SecurityContextInjector;
+import com.nexus.security.service.routes.RoutesService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

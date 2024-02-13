@@ -9,7 +9,7 @@ import com.nexus.back.domain.enums.Role;
 import com.nexus.back.domain.enums.StatusUser;
 import com.nexus.back.services.EmailService;
 import com.nexus.back.services.UserService;
-import com.nexus.security.service.JwtService;
+import com.nexus.security.service.jwt.JwtService;
 import com.nexus.utils.Utils;
 import com.nexus.validations.NonNullOrBlank;
 import io.swagger.v3.oas.annotations.Operation;

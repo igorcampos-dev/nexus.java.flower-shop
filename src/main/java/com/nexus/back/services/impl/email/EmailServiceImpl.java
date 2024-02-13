@@ -6,14 +6,15 @@ import com.nexus.back.domain.entity.User;
 import com.nexus.back.repositories.operations.FlowerDatabaseOperations;
 import com.nexus.back.repositories.operations.UserDatabaseOperations;
 import com.nexus.back.services.EmailService;
-import com.nexus.mail.SendEmailService;
 import com.nexus.mail.models.EmailProperties;
+import com.nexus.mail.service.email.SendEmailService;
 import com.nexus.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import static com.nexus.utils.Utils.replaceUrlEncodedSpaces;
 
 @Service
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendEmailUser(MessageDTO message) {
         userDatabaseOperations.userExistsByHash(message.hash());
-        ResponseFlowerGet flower = flowerDatabaseOperations.findByFilename(utils.replace(message.flower()));
+        ResponseFlowerGet flower = flowerDatabaseOperations.findByFilename(replaceUrlEncodedSpaces(message.flower()));
         Resource image = emailMethodsSupport.createImage(flower);
         EmailProperties emailProperties = emailMethodsSupport.getMessageFlower(flower, message, image);
         emailService.send(emailProperties);

@@ -25,7 +25,7 @@ public class FilterMethods {
 
 
     protected void verifyAndAuthenticateUser(TokenPropertiesDTO login){
-        userRepository.findByLogin(login.email())
+        userRepository.findByLogin(login.value())
                 .ifPresent(user -> {
                     var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -12,6 +12,8 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.nexus.utils.Utils.replaceUrlEncodedSpaces;
+
 @Service
 @AllArgsConstructor
 public class FlowerServiceImpl implements FlowerService {
@@ -24,13 +26,13 @@ public class FlowerServiceImpl implements FlowerService {
     @Transactional
     public void updateFlower(String filename, String id, MultipartFile file) {
         String bytes = utils.toBase64(file.getBytes());
-        flowerDatabaseOperations.updateFlower(id, utils.replace(filename), bytes);
+        flowerDatabaseOperations.updateFlower(id, replaceUrlEncodedSpaces(filename), bytes);
     }
 
     @SneakyThrows
     @Override
     public void save(String filename, MultipartFile file) {
-        String newFilename = utils.replace(filename);
+        String newFilename = replaceUrlEncodedSpaces(filename);
         String bytes = utils.toBase64(file.getBytes());
 
         flowerDatabaseOperations.flowerExistsByFile(bytes);
@@ -40,7 +42,7 @@ public class FlowerServiceImpl implements FlowerService {
 
     @Override
     public ResponseFlowerGet findByName(String filename) {
-    return flowerDatabaseOperations.findByFilename(utils.replace(filename));
+    return flowerDatabaseOperations.findByFilename(replaceUrlEncodedSpaces(filename));
     }
 
     @Override
