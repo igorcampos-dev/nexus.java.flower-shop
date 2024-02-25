@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class UserDatabaseOperationsImpl implements UserDatabaseOperations {
 
     private final UserRepository userRepository;
+    private static final UserNotFoundException USER_NOT_FOUND_EXCEPTION = new UserNotFoundException("Usuário não existe");
+    private static final UserAlreadyExistsException USER_ALREADY_EXISTS_EXCEPTION = new UserAlreadyExistsException("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.");
 
     @Override
     public void save(User user) {
@@ -22,35 +24,35 @@ public class UserDatabaseOperationsImpl implements UserDatabaseOperations {
 
     @Override
     public User findById(String id){
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário não existe"));
+        return userRepository.findById(id).orElseThrow(() -> USER_NOT_FOUND_EXCEPTION);
     }
 
     @Override
     public User findByHash(String hash){
-        return userRepository.findByHash(hash).orElseThrow(() -> new UserNotFoundException("Usuário não foi encontrado ao salvar a sua atividade"));
+        return userRepository.findByHash(hash).orElseThrow(() -> USER_NOT_FOUND_EXCEPTION);
     }
 
     @Override
     public User findByLogin(String login) {
-        return userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException("Usuário não existe."));
+        return userRepository.findByLogin(login).orElseThrow(() -> USER_NOT_FOUND_EXCEPTION);
     }
 
     @Override
     public User findByLoginAndHash(String email, String hash) {
-        return userRepository.findByLoginAndHash(email, hash).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+        return userRepository.findByLoginAndHash(email, hash).orElseThrow(() -> USER_NOT_FOUND_EXCEPTION);
     }
 
     @Override
     public void loginExists(String login) {
         userRepository.findByLogin(login).ifPresent(s -> {
-            throw new UserAlreadyExistsException("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.");
+            throw USER_ALREADY_EXISTS_EXCEPTION;
         });
     }
 
     @Override
     public void userExistsByHash(String hash) {
         if (userRepository.findByHash(hash).isEmpty()) {
-            throw new UserNotFoundException("Usuário não encontrado para o hash: ");
+            throw USER_NOT_FOUND_EXCEPTION;
         }
     }
 

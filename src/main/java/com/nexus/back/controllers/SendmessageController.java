@@ -31,7 +31,9 @@ public class SendmessageController {
         emailService.sendEmailUser(message);
         this.activitiesService.save(message);
         return ResponseEntity.ok()
-                             .body(new Response("Email enviado com sucesso!"));
+                             .body(RESPONSE);
     }
+
+    private static final Response RESPONSE = new Response("Email enviado com sucesso!");
 
 }

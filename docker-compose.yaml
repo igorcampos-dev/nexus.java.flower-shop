@@ -2,19 +2,41 @@ version: '3'
 services:
   mysql-db:
     container_name: mysql-db
-    image: mysql:latest
+    image: bitnami/mysql:8.0.26-debian-10-r60
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: xEgmJQ}3]@tgAU%bdb#K18fJAFUQ0KBf9]xEr_TNR}5gAB}ZN8eT]wa,0eUWURD5FAgqPzTiPL:bRCATrY+-rc%6nC)}G4Ejjq~K
+      MYSQL_ROOT_PASSWORD: PL:bRCATrY+
       MYSQL_DATABASE: floricultura
 
-  redis:
+  redis-db:
     container_name: redis-db
     hostname: redis
     image: redis
     ports:
       - "6379:6379"
     command: redis-server --requirepass 224654
+
+  java-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: java-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_PORT: 3306
+      DB_SERVER: mysql-db
+      DB_PASSWORD: PL:bRCATrY+
+      EMAIL_ADMIN: (leia o reamde!!)
+      EMAIL_PASSWORD: (leia o readme!!)
+      DB_USER: root
+      DB_DATABASE: floricultura
+      SERVER_PORT: 8080
+      REDIS_HOST: redis-db
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: 224654
+      AUTH_SIGNATURE: bRCAbRCATCAbRCCAbRTCAbRCbRCATCAbRCCAbRCAbRbRCAbRCATCAbRCCAbRTCAbRCbRCATCAbR
 
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class AuthorizationDatabaseOperationsImpl implements AuthorizationDatabaseOperations {
 
     private final UserRepository repository;
+    private static final UsernameNotFoundException USERNAME_NOT_FOUND_EXCEPTION = new UsernameNotFoundException("Usuário não encontrado");
 
     @Override
     public User findByLogin(String username) {
@@ -19,6 +20,6 @@ public class AuthorizationDatabaseOperationsImpl implements AuthorizationDatabas
                 .map(user -> new User(
                         user.getLogin(), user.getPassword(), user.getAuthorities()
                 ))
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+                .orElseThrow(() -> USERNAME_NOT_FOUND_EXCEPTION);
     }
 }

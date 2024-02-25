@@ -25,6 +25,7 @@ public class EmailServiceImpl implements EmailService {
     private final Utils utils;
     private final SendEmailService emailService;
     private final EmailMethodsSupport emailMethodsSupport;
+    private static final BCryptPasswordEncoder B_CRYPT_PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @SneakyThrows
     @Override
@@ -48,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendEmailResetPass(String email, String hash) {
         String newPass = utils.randomHash(12);
         User user = userDatabaseOperations.findByLoginAndHash(email, hash);
-        user.setPassword(new BCryptPasswordEncoder().encode(newPass));
+        user.setPassword(B_CRYPT_PASSWORD_ENCODER.encode(newPass));
         userDatabaseOperations.save(user);
 
         EmailProperties emailProperties = emailMethodsSupport.getMessageRecoveryPass(newPass, email);

@@ -1,6 +1,6 @@
 package com.nexus.back.security;
 
-import com.nexus.security.model.dto.RoutesDTO;
+import com.nexus.security.model.dto.Routes;
 import com.nexus.security.service.filter.FilterService;
 import com.nexus.security.service.filter.SecurityContextInjector;
 import com.nexus.security.service.routes.RoutesService;
@@ -19,7 +19,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -28,24 +27,24 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityConfigurations {
 
-    private List<RoutesDTO> routes;
-    private List<RoutesDTO> routesAdmin;
+    private List<Routes> routes;
+    private List<Routes> routesAdmin;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, SecurityContextInjector securityContextInjector) throws Exception {
-        routes = List.of(new RoutesDTO("/shop/register", HttpMethod.POST),
-                         new RoutesDTO("/shop/login", HttpMethod.POST),
-                         new RoutesDTO("/shop/confirme-email", HttpMethod.GET),
-                         new RoutesDTO("/api/v1/auth/**", HttpMethod.GET),
-                         new RoutesDTO("/v3/api-docs/**", HttpMethod.GET),
-                         new RoutesDTO("/v3/api-docs.yaml", HttpMethod.GET),
-                         new RoutesDTO("/swagger-ui/**", HttpMethod.GET),
-                         new RoutesDTO("/swagger-ui.html", HttpMethod.GET));
+        routes = List.of(new Routes("/shop/register", HttpMethod.POST),
+                         new Routes("/shop/login", HttpMethod.POST),
+                         new Routes("/shop/confirme-email", HttpMethod.GET),
+                         new Routes("/api/v1/auth/**", HttpMethod.GET),
+                         new Routes("/v3/api-docs/**", HttpMethod.GET),
+                         new Routes("/v3/api-docs.yaml", HttpMethod.GET),
+                         new Routes("/swagger-ui/**", HttpMethod.GET),
+                         new Routes("/swagger-ui.html", HttpMethod.GET));
 
-        routesAdmin = List.of(new RoutesDTO("/shop/register-flower/{filename}", HttpMethod.POST),
-                              new RoutesDTO("/shop/see-flowers/{filename}", HttpMethod.GET),
-                              new RoutesDTO("/shop/delete/{id}", HttpMethod.DELETE),
-                              new RoutesDTO("/shop/update-flower/{id}/{filename}", HttpMethod.PUT));
+        routesAdmin = List.of(new Routes("/shop/register-flower/{filename}", HttpMethod.POST),
+                              new Routes("/shop/see-flowers/{filename}", HttpMethod.GET),
+                              new Routes("/shop/delete/{id}", HttpMethod.DELETE),
+                              new Routes("/shop/update-flower/{id}/{filename}", HttpMethod.PUT));
 
         return new RoutesService(httpSecurity,
                                  routes,

@@ -22,6 +22,8 @@ public class FlowerDatabaseOperationsImpl implements FlowerDatabaseOperations {
     private final FlowerRepository flowerRepository;
     private final FlowerRedisRepository flowerRedisRepository;
     private final Conditional conditional;
+    private static final FlowerNotFoundException FLOWER_NOT_FOUND_EXCEPTION = new FlowerNotFoundException("Flor não encontrada");
+    private static final FlowerAlreadyExistsException FLOWER_ALREADY_EXISTS_EXCEPTION = new FlowerAlreadyExistsException("Flor com a imagem já existente!");
 
     @Override
     public ResponseFlowerGet findByFilename(String filename) {
@@ -38,7 +40,7 @@ public class FlowerDatabaseOperationsImpl implements FlowerDatabaseOperations {
             return new ResponseFlowerGet(flowerDb.get().getId(), flowerDb.get().getFilename(), flowerDb.get().getFile());
         }
 
-        else { throw new FlowerNotFoundException("Flor não existe");}
+        else { throw FLOWER_NOT_FOUND_EXCEPTION;}
     }
 
     @Override
@@ -81,20 +83,20 @@ public class FlowerDatabaseOperationsImpl implements FlowerDatabaseOperations {
     @Override
     public void flowerExistsByFile(String bytes) {
         flowerRepository.findByFile(bytes).ifPresent((s) -> {
-            throw new FlowerAlreadyExistsException("Flor com a imagem já existente!");
+            throw FLOWER_ALREADY_EXISTS_EXCEPTION;
         });
     }
     
     @Override
     public void flowerExistsByFileName(String filename) {
         flowerRepository.findByFilename(filename).ifPresent((s) -> {
-            throw new FlowerAlreadyExistsException("Flor com o nome já existente!");
+            throw FLOWER_ALREADY_EXISTS_EXCEPTION;
         });
     }
 
     @Override
     public Flowers findById(String id) {
-        return flowerRepository.findById(id).orElseThrow(() -> new FlowerNotFoundException("Flor com este id não encontrada"));
+        return flowerRepository.findById(id).orElseThrow(() -> FLOWER_NOT_FOUND_EXCEPTION);
     }
 
     @Override
@@ -109,7 +111,7 @@ public class FlowerDatabaseOperationsImpl implements FlowerDatabaseOperations {
                     flowerRedisRepository.deleteById(flower.getFilename());
                     return flower;
                 })
-                .orElseThrow(() -> new FlowerNotFoundException("Flor com este id não encontrada"));
+                .orElseThrow(() -> FLOWER_NOT_FOUND_EXCEPTION);
     }
 
     @Override

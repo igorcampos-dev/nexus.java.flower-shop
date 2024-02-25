@@ -3,6 +3,8 @@ package com.nexus.back.domain.dto.activities;
 import com.nexus.back.domain.entity.Activities;
 import com.nexus.validations.NonNullOrBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;

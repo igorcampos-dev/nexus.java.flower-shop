@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class MeuCommandLineRunner implements CommandLineRunner {
 
-    private static final Logger logger = LogManager.getLogger(MeuCommandLineRunner.class);
     private final UserRepository userRepository;
     private final Utils utils;
 
@@ -33,18 +32,21 @@ public class MeuCommandLineRunner implements CommandLineRunner {
     private void criarUsuarioSeNaoExistir(String login, String senha, Role role) {
         userRepository.findByLogin(login)
                 .ifPresentOrElse(
-                        user -> {
-                        },
+                        user -> {},
                         () -> {
                             User novoUsuario = new User();
                             novoUsuario.setRole(role);
                             novoUsuario.setStatus(StatusUser.A);
                             novoUsuario.setLogin(login);
                             novoUsuario.setHash(utils.randomHash(50));
-                            novoUsuario.setPassword(new BCryptPasswordEncoder().encode(senha));
-
+                            novoUsuario.setPassword(B_CRYPT_PASSWORD_ENCODER.encode(senha));
                             userRepository.save(novoUsuario);
                             logger.info("------------------------------------------------------------------------------------------");
                             logger.info(String.format("Usuário '%s' foi criado e salvo no banco de dados, sua senha é: '%s' .", login, senha));
                             logger.info("-------------------------------------------------------------------------------------------");
-                        });}}
+                        });}
+
+    private static final Logger logger = LogManager.getLogger(MeuCommandLineRunner.class);
+    private static final BCryptPasswordEncoder B_CRYPT_PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
+}

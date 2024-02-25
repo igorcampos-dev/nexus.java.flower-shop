@@ -4,8 +4,6 @@ import com.nexus.back.domain.dto.user.AuthenticationDTO;
 import com.nexus.back.domain.entity.User;
 import com.nexus.back.domain.enums.Role;
 import com.nexus.back.domain.enums.StatusUser;
-import com.nexus.back.exceptions.InvalidCredentialsException;
-import com.nexus.back.exceptions.UserPendingActivationException;
 import com.nexus.back.repositories.operations.UserDatabaseOperations;
 import com.nexus.back.services.UserService;
 import lombok.AllArgsConstructor;
@@ -39,7 +37,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getHash(AuthenticationDTO userDTO) {
         User user = userDatabaseOperations.findByLogin(userDTO.login());
-        this.verifyStatusAndPass(userDTO, user);
         return user.getHash();
     }
 
@@ -48,14 +45,6 @@ public class UserServiceImpl implements UserService {
         return (UserDetails) this.authenticationManager.authenticate(usernamePasswordAuthenticationToken).getPrincipal();
     }
 
-    public void verifyStatusAndPass(AuthenticationDTO userDTO, User user){
-        if (!passwordEncoder.matches(userDTO.password(), user.getPassword())) {
-            throw new InvalidCredentialsException("Credenciais incorretas!");
-        }
-        if (StatusUser.P.equals(user.getStatus())) {
-            throw new UserPendingActivationException("Usuário está pendente a ativação!");
-        }
-    }
 
 }
 

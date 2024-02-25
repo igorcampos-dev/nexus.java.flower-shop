@@ -32,8 +32,10 @@ public class FlowerController {
             @RequestParam("file") MultipartFile file
     ) {
         this.flowerService.save(filename, file);
+
+        RESPONSE.setMessage("Flor cadastrada!");
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(new Response("Flor cadastrada!"));
+                             .body(RESPONSE);
     }
 
     @Operation(summary = "Atualizar informações de uma flor")
@@ -44,8 +46,10 @@ public class FlowerController {
             @Schema(example = "Tuplica Azul", description = "novo nome da flor") @Valid @PathVariable String filename
     ) {
         this.flowerService.updateFlower(filename, id, file);
+
+        RESPONSE.setMessage("Flor modificada!");
         return ResponseEntity.ok()
-                             .body(new Response("Flor modificada!"));
+                             .body(RESPONSE);
     }
 
     @Operation(summary = "Pegar informação de uma flor com o nome")
@@ -64,7 +68,11 @@ public class FlowerController {
             @Schema(example = "1320ec46-8dc4-4874-a191-8f195703376c", description = "id da flor") @Valid @PathVariable String id
     ) {
         this.flowerService.deleteById(id);
+
+        RESPONSE.setMessage("Flor deletada com sucesso!");
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(new Response("Flor deletada com sucesso!"));
+                             .body(RESPONSE);
     }
+
+    private static final Response RESPONSE = new Response(null);
 }

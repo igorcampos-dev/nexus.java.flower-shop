@@ -64,8 +64,10 @@ public class LoginController {
 
         this.userService.save(user);
         this.emailService.sendEmailVerification(user.getLogin(), user.getHash());
+
+        RESPONSE.setMessage("Usuário cadastrado com sucesso, mas verifique a caixa de entrada do seu email para validar a sua conta!");
         return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(new Response("Usuário cadastrado com sucesso, mas verifique a caixa de entrada do seu email para validar a sua conta!"));
+                             .body(RESPONSE);
     }
 
     @Operation(summary = "envia um email com a nova senha")
@@ -76,6 +78,8 @@ public class LoginController {
 
         this.emailService.sendEmailResetPass(email, hash);
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(new Response("Enviamos um email para sua conta, indicando o passo a passo para fazer a troca de senha."));
+                             .body(RESPONSE);
     }
+
+    private static final Response RESPONSE = new Response(null);
 }
