@@ -1,4 +1,3 @@
-target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -13,13 +12,15 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+
 .idea
 *.iws
 *.iml
 *.ipr
-back.iml
-flower-shop.iml
-
+target/
+.mvn/
+mvnw.cmd
+mvnw
 
 ### NetBeans ###
 /nbproject/private/
@@ -36,7 +37,3 @@ build/
 
 ### Maven ###
 .mvn
-
-### Java ###
-target
-

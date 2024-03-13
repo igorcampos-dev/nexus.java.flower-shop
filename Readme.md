@@ -10,11 +10,17 @@
 ![License](https://img.shields.io/badge/License-MIT-blue)
 </div>
 
+---
+
 ## Overview
 A API Flower Shop é uma API de floricultura que oferece uma variedade de endpoints para gerenciar usuários e operações relacionadas a flores.
 
+---
+
 ## Autenticação
 Para acessar os recursos protegidos, incluindo operações CRUD de flores, certifique-se de ter a função(Role) **ADMIN**.
+
+---
 
 ## Pré-requisitos
 
@@ -27,10 +33,14 @@ Para executar este projeto, você precisa ter instalado:
   <p><code>api.java.mail.email</code> e <code>api.java.mail.password</code> são necessárias para o projeto, incluindo o seu ip para os containers (ou localhost em alguns casos)</p>
   <p>Assista ao <a href="https://www.youtube.com/watch?v=bK5j-GDhq8M&feature=youtu.be">vídeo de configuração</a>.</p>
 
+---
+
 ## 🚪 Portas
 
  ### Porta Padrão : localhost:8080.
 
+
+---
 
 ## 🛠️ Tecnologias
 
@@ -45,6 +55,7 @@ Para executar este projeto, você precisa ter instalado:
 - **Hibernate Validator:** <i class="fas fa-check-circle"></i> Framework para validação de dados.
 - **Swagger OpenAPI:** <i class="fas fa-book"></i> Biblioteca de documentação.
 
+---
 
 ## Usando o Swagger
 
@@ -61,35 +72,40 @@ Para executar este projeto, você precisa ter instalado:
 
 **ATENÇÃO!** As rotas do CRUD de flores requerem um usuário que tenha a role de admin. Certifique-se de verificar o log do Spring Boot após o projeto iniciar, pois no final será gerado um usuário admin para testar essas rotas, faça o login com ele e autentique o jwt token.
 
+---
+
 ## 🐳 Executando o Projeto no Docker
 
 Se você deseja executar este projeto em um contêiner Docker, siga estas etapas:
 
+---
+
 ### 📦 Execute o Script de Deploy
 No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto em um contêiner Docker. Este script compilará o projeto, iniciará o contêiner Docker do MySQL e executará o projeto Java no contêiner:
 ```bash
-./deploy-docker.sh
+docker compose up
 ```
 
 Ao executar,por padrão, você estará ativando o ambiente dev configurado no dockerfile
 
+---
+
 ## 🚀 Executando o Projeto Localmente
 
 Para executar este projeto localmente, siga estas etapas:
+
 
 ### 📦 Execute o Script de Deploy Local
 
 No diretório raiz do projeto, execute o seguinte comando para iniciar o projeto localmente:
 
 ```bash
-./deploy-local.sh
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Ao executar,por padrão, você estará ativando o ambiente dev configurado no comando sh
 
-
-
-
+---
 
 ## Endpoints
 

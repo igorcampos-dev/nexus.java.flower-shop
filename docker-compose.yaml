@@ -33,7 +33,7 @@ services:
       EMAIL_PASSWORD: (leia o readme!!)
       DB_USER: root
       DB_DATABASE: floricultura
-      SERVER_PORT: 8080
+      SERVER_PORT: 8081
       REDIS_HOST: redis-db
       REDIS_PORT: 6379
       REDIS_PASSWORD: 224654

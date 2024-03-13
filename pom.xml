@@ -26,17 +26,12 @@
 		<redis.version>3.2.1</redis.version>
 		<springdoc.version>2.3.0</springdoc.version>
 		<spring.jpa.version>3.2.2</spring.jpa.version>
-		<spring.email.version>3.2.2</spring.email.version>
 		<spring.web.version>3.2.2</spring.web.version>
 		<fasterxml.jackson.version>2.15.2</fasterxml.jackson.version>
-		<com.nexus.security>0.0.1-SNAPSHOT</com.nexus.security>
-		<com.nexus.validations>0.0.1-SNAPSHOT</com.nexus.validations>
-		<com.nexus.utils>0.0.1-SNAPSHOT</com.nexus.utils>
-		<com.nexus.mail>0.0.1-SNAPSHOT</com.nexus.mail>
-		<url.nexus.security>https://raw.githubusercontent.com/igorcampos-dev/nexus.java.lib.security/master/target/</url.nexus.security>
-		<url.nexus.validations>https://raw.githubusercontent.com/igorcampos-dev/nexus.java.lib.validations/master/target/</url.nexus.validations>
-		<url.nexus.utils>https://raw.githubusercontent.com/igorcampos-dev/nexus.java.lib.utils/master/target/</url.nexus.utils>
-		<url.nexus.mail>https://raw.githubusercontent.com/igorcampos-dev/nexus.java.lib.mail/master/target/</url.nexus.mail>
+		<nexus.java.lib.security>master-facc20fe86-1</nexus.java.lib.security>
+		<nexus.java.lib.validations>-e8395ac93a-1</nexus.java.lib.validations>
+		<nexus.java.lib.utils>master-b79351104c-1</nexus.java.lib.utils>
+		<nexus.java.lib.mail>master-b37e9deb11-1</nexus.java.lib.mail>
 	</properties>
 
 	<dependencies>
@@ -71,12 +66,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-			<version>${spring.email.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>${fasterxml.jackson.version}</version>
@@ -95,27 +84,27 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.nexus</groupId>
-			<artifactId>security</artifactId>
-			<version>${com.nexus.security}</version>
+			<groupId>com.github.igorcampos-dev</groupId>
+			<artifactId>nexus.java.lib.security</artifactId>
+			<version>${nexus.java.lib.security}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.nexus</groupId>
-			<artifactId>mail</artifactId>
-			<version>${com.nexus.mail}</version>
+			<groupId>com.github.igorcampos-dev</groupId>
+			<artifactId>nexus.java.lib.validations</artifactId>
+			<version>${nexus.java.lib.validations}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.nexus</groupId>
-			<artifactId>validations</artifactId>
-			<version>${com.nexus.validations}</version>
+			<groupId>com.github.igorcampos-dev</groupId>
+			<artifactId>nexus.java.lib.utils</artifactId>
+			<version>${nexus.java.lib.utils}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.nexus</groupId>
-			<artifactId>utils</artifactId>
-			<version>${com.nexus.utils}</version>
+			<groupId>com.github.igorcampos-dev</groupId>
+			<artifactId>nexus.java.lib.mail</artifactId>
+			<version>${nexus.java.lib.mail}</version>
 		</dependency>
 
 	</dependencies>
@@ -123,23 +112,8 @@
 	<repositories>
 
 		<repository>
-			<id>lib-security</id>
-			<url>${url.nexus.security}</url>
-		</repository>
-
-		<repository>
-			<id>lib-validations</id>
-			<url>${url.nexus.validations}</url>
-		</repository>
-
-		<repository>
-			<id>lib-utils</id>
-			<url>${url.nexus.utils}</url>
-		</repository>
-
-		<repository>
-			<id>lib-mail</id>
-			<url>${url.nexus.mail}</url>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 
 	</repositories>

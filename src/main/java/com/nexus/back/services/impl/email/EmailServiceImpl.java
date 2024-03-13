@@ -6,7 +6,7 @@ import com.nexus.back.domain.entity.User;
 import com.nexus.back.repositories.operations.FlowerDatabaseOperations;
 import com.nexus.back.repositories.operations.UserDatabaseOperations;
 import com.nexus.back.services.EmailService;
-import com.nexus.mail.models.EmailProperties;
+import com.nexus.mail.properties.EmailProperties;
 import com.nexus.mail.service.email.SendEmailService;
 import com.nexus.utils.Utils;
 import lombok.AllArgsConstructor;

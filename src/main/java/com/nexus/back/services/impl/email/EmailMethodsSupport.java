@@ -3,7 +3,7 @@ package com.nexus.back.services.impl.email;
 import com.nexus.back.domain.dto.flower.MessageDTO;
 import com.nexus.back.domain.dto.flower.ResponseFlowerGet;
 import com.nexus.back.properties.AdressProperties;
-import com.nexus.mail.models.EmailProperties;
+import com.nexus.mail.properties.EmailProperties;
 import com.nexus.utils.Readers;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -24,7 +24,7 @@ public class EmailMethodsSupport {
     private final AdressProperties properties;
 
     @SneakyThrows
-    public EmailProperties getMessageConfirmation(String hash,String email){
+    public EmailProperties getMessageConfirmation(String hash, String email){
         String url = properties.getAdress().concat("/confirme-email?hash=").concat(hash);
         String message = String.format(readersService.fileHtml("Confirmacao"), url);
 

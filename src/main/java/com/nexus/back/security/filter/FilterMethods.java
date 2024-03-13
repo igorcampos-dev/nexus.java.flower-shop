@@ -1,7 +1,7 @@
 package com.nexus.back.security.filter;
 
 import com.nexus.back.repositories.UserRepository;
-import com.nexus.security.model.dto.TokenProperties;
+import com.nexus.security.properties.TokenProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

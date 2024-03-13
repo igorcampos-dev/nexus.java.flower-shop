@@ -1,6 +1,6 @@
 package com.nexus.back.security.filter;
 
-import com.nexus.security.model.dto.TokenProperties;
+import com.nexus.security.properties.TokenProperties;
 import com.nexus.security.service.filter.SecurityContextInjector;
 import com.nexus.security.service.jwt.JwtService;
 import lombok.AllArgsConstructor;
