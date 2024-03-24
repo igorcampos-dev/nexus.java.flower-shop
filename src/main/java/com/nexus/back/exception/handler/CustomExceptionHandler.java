@@ -3,7 +3,6 @@ package com.nexus.back.exception.handler;
 import com.nexus.back.exception.*;
 import com.nexus.back.exception.object.Error;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,145 +18,85 @@ public class CustomExceptionHandler {
 
     private final Instant instant = Instant.now();
 
+    private ResponseEntity<Error> response(String message, HttpStatus status, String uri){
+        return ResponseEntity
+                .status(status)
+                .body(Error.builder()
+                        .timestamp(instant)
+                        .message(message)
+                        .status(status.value())
+                        .path(uri)
+                        .build());
+    }
+
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Error> handleValidationException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Dados inválido. Certifique-se de que os Dados fornecidos corresponde ao Dados esperados.")
-                .status(HttpStatus.BAD_REQUEST.value())
-                .path(s.getRequestURI())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-
+        String message = "Dados inválido. Certifique-se de que os Dados fornecidos corresponde ao Dados esperados.";
+        return this.response(message, HttpStatus.BAD_REQUEST, s.getRequestURI());
     }
 
     @ExceptionHandler(UserPendingActivationException.class)
     public ResponseEntity<Error> userPendingException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Sua conta está pendente de ativação. Por favor, verifique seu email e siga as instruções de ativação antes de fazer login.")
-                .status(HttpStatus.FORBIDDEN.value())
-                .path(s.getRequestURI())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+        String message = "Sua conta está pendente de ativação. Por favor, verifique seu email e siga as instruções de ativação antes de fazer login.";
+        return this.response(message, HttpStatus.FORBIDDEN, s.getRequestURI());
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Error> userAlreadyExits(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.")
-                .status(HttpStatus.CONFLICT.value())
-                .path(s.getRequestURI())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        String message = "Já existe um Usuário com certas informações. Por favor, escolha credenciais diferentes.";
+        return this.response(message, HttpStatus.CONFLICT, s.getRequestURI());
     }
 
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<Error> messagingException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("O servidor encontrou uma falha ao tentar enviar o email. Por favor, tente novamente mais tarde.")
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        String message = "O servidor encontrou uma falha ao tentar enviar o email. Por favor, tente novamente mais tarde.";
+        return this.response(message, HttpStatus.INTERNAL_SERVER_ERROR, s.getRequestURI());
     }
-
 
     @ExceptionHandler(InvalidEmailException.class)
     public ResponseEntity<Error> invalidEmailException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Email inválido. Verifique o formato do email fornecido.")
-                .status(HttpStatus.BAD_REQUEST.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        String message = "Email inválido. Verifique o formato do email fornecido.";
+        return this.response(message, HttpStatus.BAD_REQUEST, s.getRequestURI());
     }
-
 
     @ExceptionHandler(FlowerNotFoundException.class)
     public ResponseEntity<Error> flowerNotFoundException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Flor não encontrada")
-                .status(HttpStatus.NOT_FOUND.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        String message = "Flor não encontrada";
+        return this.response(message, HttpStatus.NOT_FOUND, s.getRequestURI());
     }
-
 
     @ExceptionHandler(FlowerAlreadyExistsException.class)
     public ResponseEntity<Error> flowerAlreadyExistsException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Já existe um flor com certas informações. Por favor, escolha informações diferentes.")
-                .status(HttpStatus.CONFLICT.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        String message = "Já existe um flor com certas informações. Por favor, escolha informações diferentes.";
+        return this.response(message, HttpStatus.CONFLICT, s.getRequestURI());
     }
-
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Error> userNotFoundException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("Usuário não encontrado")
-                .status(HttpStatus.NOT_FOUND.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        String message = "Usuário não encontrado";
+        return this.response(message, HttpStatus.NOT_FOUND, s.getRequestURI());
     }
-
-
-
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Error> methodArgumentNotValidException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("dado passado é inválido")
-                .status(HttpStatus.BAD_REQUEST.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        String message = "dado passado é inválido";
+        return this.response(message, HttpStatus.BAD_REQUEST, s.getRequestURI());
     }
-
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Error> invalidCredentialsException(HttpServletRequest s){
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message("credenciais incorretas")
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .path(s.getRequestURI())
-                .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        String message = "credenciais incorretas";
+        return this.response(message, HttpStatus.UNAUTHORIZED, s.getRequestURI());
     }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Error> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest s) {
         StringBuilder errorMessage = new StringBuilder();
 
-        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errorMessage.append(String.format(
-                    "o campo '%s' %s",
-                    violation.getPropertyPath(),
-                    violation.getMessage()));
-        }
+        ex.getConstraintViolations().forEach( constraintViolation -> {
+            errorMessage.append(String.format("o campo '%s' %s", constraintViolation.getPropertyPath(), constraintViolation.getMessage()));
+        });
 
-        Error error = Error.builder()
-                .timestamp(instant)
-                .message(errorMessage.toString())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .path(s.getRequestURI())
-                .build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return this.response(errorMessage.toString(), HttpStatus.BAD_REQUEST, s.getRequestURI());
     }
 }

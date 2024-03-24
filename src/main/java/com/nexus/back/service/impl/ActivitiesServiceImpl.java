@@ -9,6 +9,7 @@ import com.nexus.back.repository.operations.UserDatabaseOperations;
 import com.nexus.back.service.ActivitiesService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -7,6 +7,7 @@ import com.nexus.back.repository.ActivitiesRepository;
 import com.nexus.back.repository.operations.ActivitiesDatabaseOperations;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
