@@ -3,7 +3,7 @@ package com.nexus.back.run;
 import com.nexus.back.domain.entity.User;
 import com.nexus.back.domain.enums.Role;
 import com.nexus.back.domain.enums.StatusUser;
-import com.nexus.back.repositories.UserRepository;
+import com.nexus.back.repository.UserRepository;
 import com.nexus.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
